@@ -1,4 +1,4 @@
-import model.Funcionario;
+import domain.model.Funcionario;
 
 import java.io.IOException;
 import java.util.List;
