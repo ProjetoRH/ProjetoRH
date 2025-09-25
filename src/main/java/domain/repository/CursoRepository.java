@@ -9,9 +9,9 @@ public interface CursoRepository {
 
     void cadastrarCurso(Curso curso);
 
-    Optional<Funcionario> buscarCurso(Curso curso);
+    Optional<Curso> buscarCurso(Curso curso);
 
     void desativarCurso(int id);
 
-    Optional<Funcionario> listarCurso();
+    Optional<Curso> listarCurso();
 }

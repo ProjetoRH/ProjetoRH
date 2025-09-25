@@ -38,7 +38,7 @@ public class CursoRepositorylmpl implements CursoRepository {
     }
 
     @Override
-    public Optional<Funcionario> buscarCurso(Curso curso) {
+    public Optional<Curso> buscarCurso(Curso curso) {
         String query = """
                 SELECT 
                 id_curso,
@@ -93,7 +93,7 @@ public class CursoRepositorylmpl implements CursoRepository {
     }
 
     @Override
-    public Optional<Funcionario> listarCurso() {
+    public Optional<Curso> listarCurso() {
         String query = """
                 SELECT nome, data_inicio, data_termino, status
                 FROM Curso
