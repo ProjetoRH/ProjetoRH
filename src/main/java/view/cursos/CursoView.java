@@ -1,5 +1,7 @@
 package view.cursos;
 
+import view.utils.ConsoleUtils;
+
 import java.util.Scanner;
 
 public class CursoView {
@@ -8,6 +10,7 @@ public class CursoView {
         int opcao;
 
         do {
+            ConsoleUtils.limparTela();
             System.out.println("\n--- Menu Cursos (Funcionário) ---");
             System.out.println("1 - Listar meus cursos");
             System.out.println("2 - Ver cursos pendentes");
@@ -18,18 +21,23 @@ public class CursoView {
 
             switch (opcao) {
                 case 1:
+                    ConsoleUtils.limparTela();
                     System.out.println("[FUNCAO AQUI] Listando cursos do funcionário...");
                     break;
                 case 2:
+                    ConsoleUtils.limparTela();
                     System.out.println("[FUNCAO AQUI] Mostrando cursos pendentes...");
                     break;
                 case 3:
+                    ConsoleUtils.limparTela();
                     System.out.println("[FUNCAO AQUI] Consultando frequência em curso...");
                     break;
                 case 0:
+                    ConsoleUtils.limparTela();
                     System.out.println("Voltando ao menu anterior...");
                     break;
                 default:
+                    ConsoleUtils.limparTela();
                     System.out.println("Opção inválida!");
             }
         } while (opcao != 0);

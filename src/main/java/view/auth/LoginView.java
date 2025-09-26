@@ -4,6 +4,7 @@ import view.funcionario.FuncionarioAdmView;
 import view.funcionario.FuncionarioView;
 import view.cursos.CursoAdmView;
 import view.cursos.CursoView;
+import view.utils.ConsoleUtils;
 
 import java.io.Console;
 
@@ -20,6 +21,7 @@ public class LoginView {
             return;
         }
 
+        ConsoleUtils.limparTela();
         System.out.println("=== SYSTEM DE RH ===");
 
         String usuario = console.readLine("Usuario: ");
