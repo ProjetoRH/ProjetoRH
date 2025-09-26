@@ -5,9 +5,13 @@ import domain.repository.FuncionarioRepository;
 
 import java.util.Optional;
 
-public class FuncionarioRepositoryImpl implements FuncionarioRepository {
+public class    FuncionarioRepositoryImpl implements FuncionarioRepository {
     @Override
     public void cadastrarFuncionario(Funcionario funcionario) {
+        String query = """
+                INSERT INTO Funcionario
+                
+                """
 
     }
 
