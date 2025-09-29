@@ -6,7 +6,7 @@ public class Curso {
      String nome;
      String data_inicio;
      String data_termino;
-      String statusCurso;
+     String statusCurso;
 
     public Curso(int id_curso, String nome, String data_inicio, String data_termino, String statusCurso) {
         this.id_curso = id_curso;
@@ -14,6 +14,10 @@ public class Curso {
         this.data_inicio = data_inicio;
         this.data_termino = data_termino;
         this.statusCurso = statusCurso;
+    }
+
+    public Curso() {
+
     }
 
     public int getId_curso() {

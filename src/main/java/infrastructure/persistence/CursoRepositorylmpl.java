@@ -1,7 +1,6 @@
 package infrastructure.persistence;
 
 import domain.model.Curso;
-import domain.model.Funcionario;
 import domain.repository.CursoRepository;
 import infrastructure.database.ConexaoFactory;
 
@@ -9,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CursoRepositorylmpl implements CursoRepository {
@@ -17,7 +18,7 @@ public class CursoRepositorylmpl implements CursoRepository {
     @Override
     public void cadastrarCurso(Curso curso) {
         String query = """
-                INSERT INTO Curso (nome, data_inicio, data_termino, status
+                INSERT INTO Curso (nome, data_inicio, data_termino, status)
                 VALUES (?,?,?,?)
                 """;
 
@@ -38,47 +39,53 @@ public class CursoRepositorylmpl implements CursoRepository {
     }
 
     @Override
-    public Optional<Curso> buscarCurso(Curso curso) {
+    public void atualizarStatus(Curso curso) {
         String query = """
-                SELECT 
-                id_curso,
-                nome, 
-                data_inicio,
-                data_termino,
-                status
-                FROM Curso
-                WHERE id = ?
+                UPDATE Curso SET status = ? WHERE id_curso = ?
                 """;
 
+        try(Connection conn = ConexaoFactory.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+            stmt.setString(1, curso.getStatusCurso());
+            stmt.setInt(2, curso.getId_curso());
+            stmt.executeUpdate();
+            System.out.printf("Status atualizado!");
+
+        }catch (SQLException e ){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Optional<Curso> buscarCurso(Curso curso) {
+        String query = "SELECT id_curso, nome, data_inicio, data_termino, status FROM Curso WHERE id_curso = ?";
         try (Connection conn = ConexaoFactory.conectar();
-            PreparedStatement stmt = conn.prepareStatement(query)){
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setInt(1, curso.getId_curso());
-
-            try (ResultSet rs = stmt.executeQuery()){
-                while (rs.next()){
-                    int idCurso = rs.getInt("id_curso");
-                    String nome = rs.getString("nome");
-                    String data_inicio = rs.getString("data_inicio");
-                    String dataTermino = rs.getString("data_termino");
-                    String status = rs.getString("status");
-
-                    System.out.printf(
-                            "Curso %d | Nome: %s | Data Início: %s | Data Término: %s | Status: %s(%s - %s)%n",
-                            idCurso,nome, data_inicio, dataTermino, status
-                    );
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Curso c = new Curso();
+                    c.setId_curso(rs.getInt("id_curso"));
+                    c.setNome(rs.getString("nome"));
+                    c.setData_inicio(rs.getString("data_inicio"));
+                    c.setData_termino(rs.getString("data_termino"));
+                    c.setStatusCurso(rs.getString("status"));
+                    return Optional.of(c);
                 }
             }
-        }
-        catch (SQLException e){
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
 
 
+
     @Override
     public void desativarCurso(int id){
-        String query = "DELETE FROM Curso WHERE id = ?";
+        String query = "DELETE FROM Curso WHERE id_curso = ?";
 
         try(Connection conn = ConexaoFactory.conectar();
         PreparedStatement stmt = conn.prepareStatement(query)){
@@ -93,33 +100,32 @@ public class CursoRepositorylmpl implements CursoRepository {
     }
 
     @Override
-    public Optional<Curso> listarCurso() {
+    public List<Curso> listarCurso() {
         String query = """
-                SELECT nome, data_inicio, data_termino, status
-                FROM Curso
-                """;
+            SELECT id_curso, nome, data_inicio, data_termino, status
+            FROM Curso
+            """;
+
+        List<Curso> cursos = new ArrayList<>();
 
         try (Connection conn = ConexaoFactory.conectar();
-        PreparedStatement stmt = conn.prepareStatement(query)){
-        ResultSet rs = stmt.executeQuery();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
-        while (rs.next()){
-            String nomeCurso = rs.getString("nome");
-            String data_inicio = rs.getString("data_inicio");
-            String dataTermino= rs.getString("data_termino");
-            String status = rs.getString("status");
+            while (rs.next()) {
+                Curso c = new Curso();
+                c.setId_curso(rs.getInt("id_curso"));
+                c.setNome(rs.getString("nome"));
+                c.setData_inicio(rs.getString("data_inicio"));
+                c.setData_termino(rs.getString("data_termino"));
+                c.setStatusCurso(rs.getString("status"));
+                cursos.add(c);
+            }
 
-            System.out.println(
-                    "Nome: " + nomeCurso +
-                            ", Data início: " + data_inicio +
-                            ", Data término: " + dataTermino +
-                            ", Status: " + status);
-        }
-
-        }catch (SQLException e ){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return Optional.empty();
+        return cursos;
     }
 }
