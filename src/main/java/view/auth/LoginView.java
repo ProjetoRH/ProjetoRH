@@ -17,25 +17,43 @@ public class LoginView {
         Console console = System.console();
 
         if (console == null){
-            System.out.print("ERRO! Não foi possível obter acesso ao console");
+            System.out.println("╔════════════════════════════╗");
+            System.out.println("║ ERRO                       ║");
+            System.out.println("╠════════════════════════════╣");
+            System.out.println("║ Não foi possível acessar   ║");
+            System.out.println("║ o console                  ║");
+            System.out.println("╚════════════════════════════╝");
             return;
         }
 
         ConsoleUtils.limparTela();
-        System.out.println("=== SYSTEM DE RH ===");
+        System.out.println("");
+        System.out.println("╔════════════════════════════╗");
+        System.out.println("║ SYSTEM DE RH               ║");
+        System.out.println("╠════════════════════════════╣");
+        System.out.println("║ Bem-vindo! Faça seu login  ║");
+        System.out.println("╚════════════════════════════╝");
 
         String usuario = console.readLine("Usuario: ");
         char[] senhaDigitada = console.readPassword("Senha: ");
 
         if (usuario.equals(usuarioAdmin) && String.valueOf(senhaDigitada).equals(senhaAdmin)) {
-            System.out.println("Login de ADM efetuado com sucesso!");
+            System.out.println("╔════════════════════════════╗");
+            System.out.println("║ Login ADM                  ║");
+            System.out.println("╠════════════════════════════╣");
+            System.out.println("║ Login de ADM efetuado      ║");
+            System.out.println("║ com sucesso!               ║");
+            System.out.println("╚════════════════════════════╝");
             abrirMenuAdmin();
         } else{
-            System.out.println("Login de funcionario efetuado com sucesso!");
+            System.out.println("╔════════════════════════════╗");
+            System.out.println("║ Login Funcionário          ║");
+            System.out.println("╠════════════════════════════╣");
+            System.out.println("║ Login de funcionário       ║");
+            System.out.println("║ efetuado com sucesso!      ║");
+            System.out.println("╚════════════════════════════╝");
             abrirMenuFuncionario();
         }
-        System.out.println("=====================");
-
     }
 
     private void abrirMenuAdmin() {
@@ -53,5 +71,4 @@ public class LoginView {
         funcView.menuFuncionario();
         cursoView.menuFuncionario();
     }
-
 }
