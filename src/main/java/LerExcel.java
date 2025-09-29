@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LerExcel {
 
-    public List<Funcionario> lerExcel(String filepath) throws IOException {
+    /* public List<Funcionario> lerExcel(String filepath) throws IOException {
 
         List<Funcionario> funcionarios = new ArrayList<>();
         FileInputStream stream = new FileInputStream(filepath);
@@ -52,5 +52,7 @@ public class LerExcel {
         }
         return funcionarios;
     }
+
+    */
 }
 

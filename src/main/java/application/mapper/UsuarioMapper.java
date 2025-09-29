@@ -1,11 +1,11 @@
 package application.mapper;
 
-import application.dto.LoginUsuarioRequestDTO;
+import application.dto.LoginUsuarioRequest;
 import domain.model.Usuario;
 
 public class UsuarioMapper {
 
-    public Usuario toEntity(LoginUsuarioRequestDTO loginUsuarioRequestDTO) {
+    public Usuario toEntity(LoginUsuarioRequest loginUsuarioRequestDTO) {
         return new Usuario(loginUsuarioRequestDTO.email(), loginUsuarioRequestDTO.senha());
     }
 }

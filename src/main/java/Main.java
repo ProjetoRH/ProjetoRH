@@ -1,4 +1,12 @@
+import application.service.FuncionarioService;
+import application.service.UsuarioService;
 import domain.model.Funcionario;
+import domain.model.valueobjects.Email;
+import domain.model.valueobjects.Telefone;
+import domain.repository.CargoRepository;
+import domain.repository.FuncionarioRepository;
+import infrastructure.persistence.CargoRepositoryImpl;
+import infrastructure.persistence.FuncionarioRepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,14 +15,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        LerExcel lerExcel = new LerExcel();
 
-        Scanner sc = new Scanner(System.in);
-
-        List<Funcionario> funcionarios = lerExcel.lerExcel(sc.nextLine());
-
-        for (Funcionario f : funcionarios) {
-            System.out.println(f.toString());
+            System.out.println("Erro ao cadastrar funcionário: " + e.getMessage());
         }
     }
 }

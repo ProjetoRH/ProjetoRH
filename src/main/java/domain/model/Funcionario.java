@@ -1,16 +1,21 @@
 package domain.model;
 
 import domain.model.valueobjects.Email;
+import domain.model.valueobjects.Telefone;
 
 public class Funcionario {
     String nome;
     Email email;
-    String telefone;
+    Telefone telefone;
+    String cargo;
+    String departamento;
 
-    public Funcionario(String nome, Email email, String telefone) {
+    public Funcionario(String nome, Email email, Telefone telefone, String cargo, String departamento) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.cargo = cargo;
+        this.departamento = departamento;
     }
 
     public String getNome() {
@@ -29,12 +34,28 @@ public class Funcionario {
         this.email = email;
     }
 
-    public String getTelefone() {
+    public Telefone getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
+    public void setTelefone(Telefone telefone) {
         this.telefone = telefone;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 
     @Override
@@ -43,6 +64,8 @@ public class Funcionario {
                 "nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", telefone='" + telefone + '\'' +
+                ", cargo='" + cargo + '\'' +
+                ", departamento='" + departamento + '\'' +
                 '}';
     }
 }

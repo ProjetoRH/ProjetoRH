@@ -7,11 +7,9 @@ import java.sql.SQLException;
 
 public class ConexaoFactory {
 
-        FileInputStream fileInputStream = new FileInputStream("database.properties");
-
-        private static final String URL = "jdbc:mysql://localhost:3306/projetoFinal?useSSL=false&serverTimezone=UTC";
+        private static final String URL = "jdbc:mysql://crossover.proxy.rlwy.net:11801/railway?useSSL=false&serverTimezone=UTC";
         private static final String USER = "root";
-        private static final String SENHA = "mysqlPW";
+        private static final String SENHA = "TCmlrEgzlNRENgNbSpmzXltIJJjpLRJt";
 
 
         public static Connection conectar() throws SQLException {
