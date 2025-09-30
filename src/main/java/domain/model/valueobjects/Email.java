@@ -1,6 +1,6 @@
 package domain.model.valueobjects;
 
-import shared.exception.EmailInvalidoException;
+import shared.exceptions.EmailInvalidoException;
 
 public class Email {
     private final String email;
@@ -13,7 +13,7 @@ public class Email {
     }
 
     private boolean validarEmail(String email) {
-        // Regex simples para validação de email
+
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$" );
     }
 

@@ -13,10 +13,15 @@ public class Telefone {
     }
 
     private boolean validarTelefone(String telefone) {
-        return telefone != null && (
-            telefone.matches("\\(\\d{2}\\)\\d{4,5}-\\d{4}") || // (11)99999-9999
-            telefone.matches("\\d{11}") // 11999999999
-        );
+        if (telefone == null) {
+            return false;
+        }
+
+        boolean formatoComParenteses = telefone.matches("^\\(\\d{2}\\)\\s?\\d{4,5}-\\d{4}$");
+
+        boolean formatoApenasNumeros = telefone.matches("^\\d{11}$");
+
+        return formatoComParenteses || formatoApenasNumeros;
     }
 
     public String obterTelefone() {

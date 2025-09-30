@@ -3,6 +3,8 @@ package domain.model;
 import domain.model.valueobjects.Email;
 import domain.model.valueobjects.Telefone;
 
+import java.util.Objects;
+
 public class Funcionario {
     String nome;
     Email email;
@@ -11,11 +13,11 @@ public class Funcionario {
     String departamento;
 
     public Funcionario(String nome, Email email, Telefone telefone, String cargo, String departamento) {
-        this.nome = nome;
-        this.email = email;
-        this.telefone = telefone;
-        this.cargo = cargo;
-        this.departamento = departamento;
+        this.nome = Objects.requireNonNull(nome, "Nome não pode ser nulo");
+        this.email = Objects.requireNonNull(email, "Email não pode ser nulo");
+        this.telefone = Objects.requireNonNull(telefone, "Telefone não pode ser nulo");
+        this.cargo = Objects.requireNonNull(cargo, "Cargo não pode ser nulo");
+        this.departamento = Objects.requireNonNull(departamento, "Departamento não pode ser nulo");
     }
 
     public String getNome() {

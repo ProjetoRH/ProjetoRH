@@ -22,9 +22,19 @@ public class UsuarioService {
 
         Usuario usuario = funcionarioUsuarioMapper.convert(funcionario);
 
+        System.out.println("DEBUG senha: "+usuario.getSenha());
+
         String senhaHash = SenhaUtil.hashSenha(usuario.getSenha());
         usuario.setSenha(senhaHash);
 
         return usuarioRepository.cadastrarUsuario(usuario);
+    }
+
+    public boolean validarUsuario(Usuario usuario) {
+        if(usuario == null) {
+            throw new IllegalArgumentException("Úsuario não pode ser nulo.");
+        }
+
+        return true;
     }
 }
