@@ -42,8 +42,6 @@ public class Main {
             // O FuncionarioService precisa de todos os outros para funcionar
             FuncionarioService funcionarioService = new FuncionarioService(
                     funcionarioRepository,
-                    cargoRepository,
-                    usuarioService
             );
 
             // 4. EXECUTAR A AÇÃO PRINCIPAL

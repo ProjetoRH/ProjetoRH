@@ -8,16 +8,12 @@ import java.util.Objects;
 public class Funcionario {
     String nome;
     Email email;
-    Telefone telefone;
-    String cargo;
-    String departamento;
+    Telefone telefone;;
 
-    public Funcionario(String nome, Email email, Telefone telefone, String cargo, String departamento) {
+    public Funcionario(String nome, Email email, Telefone telefone) {
         this.nome = Objects.requireNonNull(nome, "Nome não pode ser nulo");
         this.email = Objects.requireNonNull(email, "Email não pode ser nulo");
         this.telefone = Objects.requireNonNull(telefone, "Telefone não pode ser nulo");
-        this.cargo = Objects.requireNonNull(cargo, "Cargo não pode ser nulo");
-        this.departamento = Objects.requireNonNull(departamento, "Departamento não pode ser nulo");
     }
 
     public String getNome() {
@@ -44,21 +40,6 @@ public class Funcionario {
         this.telefone = telefone;
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
-    }
 
     @Override
     public String toString() {
@@ -66,8 +47,6 @@ public class Funcionario {
                 "nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", telefone='" + telefone + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", departamento='" + departamento + '\'' +
                 '}';
     }
 }

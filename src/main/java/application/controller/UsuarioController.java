@@ -1,15 +1,22 @@
 package application.controller;
 
+import application.dto.CadastrarUsuarioRequest;
 import application.service.UsuarioService;
-import domain.model.Funcionario;
-import domain.model.Usuario;
 
 public class UsuarioController {
 
-     private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-    public void cadastrarUsuario(Funcionario funcionario) {
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
-        usuarioService.cadastrarUsuario(funcionario);
+    public int cadastrarUsuario(CadastrarUsuarioRequest request) {
+
+        if (request == null) {
+            throw new IllegalArgumentException("O Usuario não pode ser nulo");
+        } else {
+            return usuarioService.cadastrarUsuario(request);
+        }
     }
 }

@@ -4,27 +4,62 @@ import domain.model.Funcionario;
 import domain.repository.FuncionarioRepository;
 import infrastructure.database.ConexaoFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
  public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
-    @Override
-    public void cadastrarFuncionario(Funcionario funcionario, int idCargo, int idUsuario) throws SQLException {
+     public int cadastrarFuncionario(Funcionario funcionario, int idCargo, int idUsuario) throws SQLException {
+         String query = """
+            INSERT INTO Funcionario (nome_funcionario, email_funcionario, telefone, id_cargo, id_usuario)
+            VALUES (?, ?, ?, ?, ?)
+        """;
+
+         try (Connection conn = ConexaoFactory.conectar();
+              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+             stmt.setString(1, funcionario.getNome());
+             stmt.setString(2, funcionario.getEmail().obterEmail());
+             stmt.setString(3, funcionario.getTelefone().obterTelefone());
+             stmt.setInt(4, idCargo);
+             stmt.setInt(5, idUsuario);
+
+             stmt.executeUpdate();
+
+             try (ResultSet rs = stmt.getGeneratedKeys()) {
+                 if (rs.next()) {
+                     return rs.getInt(1);
+                 } else {
+                     throw new SQLException("Falha ao obter ID do funcionário inserido.");
+                 }
+             }
+
+         } catch (SQLException e) {
+             throw new SQLException(e);
+         }
+     }
+
+     @Override
+    public void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException {
+
         String query = """
                 INSERT INTO Funcionario (nome_funcionario, email_funcionario, telefone, id_cargo, id_usuario)
                 VALUES (?, ?, ?, ?, ?)
             """;
         try (Connection conn = ConexaoFactory.conectar();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, funcionario.getNome());
-            stmt.setString(2, funcionario.getEmail().obterEmail());
-            stmt.setString(3, funcionario.getTelefone().obterTelefone());
-            stmt.setInt(4, idCargo);
-            stmt.setInt(5, idUsuario);
-            stmt.executeUpdate();
+
+            for(Funcionario funcionario : funcionarios) {
+                stmt.setString(1, funcionario.getNome());
+                stmt.setString(2, funcionario.getEmail().obterEmail());
+                stmt.setString(3, funcionario.getTelefone().obterTelefone());
+                stmt.setInt(4, idCargo);
+                stmt.setInt(5, idUsuario);
+
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
 
 
         } catch (SQLException e) {

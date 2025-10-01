@@ -2,7 +2,5 @@ package application.dto;
 
 import domain.model.valueobjects.Email;
 
-public record CadastrarUsuarioRequest(
-        Email email,
-        String senha_hash
-) { }
+public record CadastrarUsuarioRequest(Email email) {
+}
