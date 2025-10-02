@@ -1,13 +1,13 @@
-package application.dto;
+package application.dto.funcionario;
 
 import domain.model.valueobjects.Email;
 import domain.model.valueobjects.Telefone;
 
-public record CadastrarFuncionarioRequest(
+public record FuncionarioControllerRequest(
         String nome,
         Email email,
         Telefone telefone,
-        int idCargo,
-        int idUsuario
+        String cargo,
+        String departamento
 ) {
 }

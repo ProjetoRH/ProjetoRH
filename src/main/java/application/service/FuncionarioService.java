@@ -1,7 +1,9 @@
 package application.service;
 
-import application.dto.CadastrarFuncionarioRequest;
-import application.dto.CadastrarFuncionarioResponse;
+import application.dto.cargo.CadastrarCargoRequest;
+import application.dto.funcionario.CadastrarFuncionarioResponse;
+import application.dto.funcionario.FuncionarioControllerRequest;
+import application.dto.usuario.CadastrarUsuarioRequest;
 import application.mapper.FuncionarioMapper;
 import domain.model.Funcionario;
 import domain.repository.FuncionarioRepository;
@@ -13,26 +15,49 @@ public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final FuncionarioMapper mapper;
+    private final UsuarioService usuarioService;
+    private final CargoService cargoService;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioMapper mapper) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, FuncionarioMapper mapper, UsuarioService usuarioService, CargoService cargoService) {
         this.funcionarioRepository = funcionarioRepository;
         this.mapper = mapper;
+        this.usuarioService = usuarioService;
+        this.cargoService = cargoService;
     }
 
 
-    public CadastrarFuncionarioResponse cadastrarFuncionario(CadastrarFuncionarioRequest request) throws SQLException {
+    public CadastrarFuncionarioResponse cadastrarFuncionario(FuncionarioControllerRequest request) throws SQLException {
 
         if (request == null) {
             throw new IllegalArgumentException("Funcionário não pode ser nulo.");
         }
 
-        Funcionario funcionario = mapper.toEntity(request);
+        CadastrarUsuarioRequest usuarioRequest = new CadastrarUsuarioRequest(request.email());
+        int idUsuario = usuarioService.cadastrarUsuario(usuarioRequest);
+        if (idUsuario <= 0) {
+            throw new IllegalStateException("Usuário não foi cadastrado corretamente.");
+        }
 
-        int idFuncionario = funcionarioRepository.cadastrarFuncionario(funcionario, request.idCargo(), request.idUsuario());
+        CadastrarCargoRequest cargoRequest = new CadastrarCargoRequest(request.cargo(), request.departamento());
+        int idCargo = cargoService.buscarOuCadastrarCargo(cargoRequest);
+        if (idCargo <= 0) {
+            throw new IllegalStateException("Cargo não foi cadastrado corretamente.");
+        }
+
+        Funcionario funcionario = new Funcionario();
+        funcionario.setNome(request.nome());
+        funcionario.setTelefone(request.telefone());
+        funcionario.setEmail(request.email());
+        funcionario.setIdCargo(idCargo);
+        funcionario.setIdUsuario(idUsuario);
+
+        int idFuncionario = funcionarioRepository.cadastrarFuncionario(funcionario);
+        if (idFuncionario <= 0) {
+            throw new IllegalStateException("Funcionário não foi cadastrado corretamente.");
+        }
 
         return mapper.toResponse(funcionario, idFuncionario);
     }
-
     public void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios) throws SQLException {
 
         if (funcionarios == null) {

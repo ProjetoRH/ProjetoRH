@@ -1,7 +1,7 @@
 package application.mapper;
 
-import application.dto.CadastrarFuncionarioRequest;
-import application.dto.CadastrarFuncionarioResponse;
+import application.dto.funcionario.CadastrarFuncionarioRequest;
+import application.dto.funcionario.CadastrarFuncionarioResponse;
 import domain.model.Funcionario;
 
 public class FuncionarioMapper {
@@ -11,7 +11,9 @@ public class FuncionarioMapper {
         return new Funcionario(
                 request.nome(),
                 request.email(),
-                request.telefone()
+                request.telefone(),
+                request.idCargo(),
+                request.idUsuario()
         );
     }
 

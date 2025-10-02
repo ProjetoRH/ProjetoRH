@@ -24,12 +24,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
 
             if (rs.next()) {
                 String hashBanco = rs.getString("senha");
-                boolean senhaValida = SenhaUtil.verificaSenha(sessao.getUsuario().getSenha(),hashBanco);
-                if(senhaValida) {
-                    return sessao.validaSessao();
-                }else {
-                    return sessao.invalidaSessao();
-                }
+                return SenhaUtil.verificaSenha(sessao.getUsuario().getSenha(),hashBanco);
             } else {
                 return sessao.invalidaSessao();
             }

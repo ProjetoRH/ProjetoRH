@@ -1,6 +1,6 @@
 package application.service;
 
-import application.dto.CadastrarUsuarioRequest;
+import application.dto.usuario.CadastrarUsuarioRequest;
 import application.mapper.UsuarioMapper;
 import domain.model.Usuario;
 import domain.repository.UsuarioRepository;

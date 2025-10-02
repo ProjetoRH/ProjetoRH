@@ -10,7 +10,7 @@ import java.util.Optional;
 
  public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
-     public int cadastrarFuncionario(Funcionario funcionario, int idCargo, int idUsuario) throws SQLException {
+     public int cadastrarFuncionario(Funcionario funcionario) throws SQLException {
          String query = """
             INSERT INTO Funcionario (nome_funcionario, email_funcionario, telefone, id_cargo, id_usuario)
             VALUES (?, ?, ?, ?, ?)
@@ -22,8 +22,8 @@ import java.util.Optional;
              stmt.setString(1, funcionario.getNome());
              stmt.setString(2, funcionario.getEmail().obterEmail());
              stmt.setString(3, funcionario.getTelefone().obterTelefone());
-             stmt.setInt(4, idCargo);
-             stmt.setInt(5, idUsuario);
+             stmt.setInt(4, funcionario.getIdCargo());
+             stmt.setInt(5, funcionario.getIdUsuario());
 
              stmt.executeUpdate();
 
@@ -54,8 +54,8 @@ import java.util.Optional;
                 stmt.setString(1, funcionario.getNome());
                 stmt.setString(2, funcionario.getEmail().obterEmail());
                 stmt.setString(3, funcionario.getTelefone().obterTelefone());
-                stmt.setInt(4, idCargo);
-                stmt.setInt(5, idUsuario);
+                stmt.setInt(4, funcionario.getIdCargo());
+                stmt.setInt(5, funcionario.getIdUsuario());
 
                 stmt.addBatch();
             }

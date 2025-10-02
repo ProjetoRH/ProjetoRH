@@ -23,10 +23,6 @@ public class Usuario {
         return senha;
     }
 
-    public void setSenha_hash(String senha) {
-        this.senha = senha;
-    }
-
     public void setSenha(String senhaHash) {
         this.senha = senhaHash;
     }

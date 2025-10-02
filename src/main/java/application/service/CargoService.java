@@ -1,6 +1,6 @@
 package application.service;
 
-import application.dto.CadastrarCargoRequest;
+import application.dto.cargo.CadastrarCargoRequest;
 import domain.repository.CargoRepository;
 import infrastructure.persistence.CargoRepositoryImpl;
 

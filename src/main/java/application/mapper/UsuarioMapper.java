@@ -1,6 +1,6 @@
 package application.mapper;
 
-import application.dto.CadastrarUsuarioRequest;
+import application.dto.usuario.CadastrarUsuarioRequest;
 import domain.model.Usuario;
 
 public class UsuarioMapper {

@@ -1,9 +1,8 @@
 package infrastructure.persistence.xlsx;
 
-import domain.model.Funcionario;
+import application.dto.funcionario.CadastrarFuncionarioExcelRequest;
 import domain.model.valueobjects.Email;
 import domain.model.valueobjects.Telefone;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -17,59 +16,61 @@ import java.util.List;
 
 public class LerExcel {
 
-    public List<Funcionario> lerExcel(String filepath) throws IOException {
+    public List<CadastrarFuncionarioExcelRequest> lerExcel(String filepath) throws IOException {
 
-        List<Funcionario> funcionarios = new ArrayList<>();
-        FileInputStream stream = new FileInputStream(filepath);
+        List<CadastrarFuncionarioExcelRequest> funcionarios = new ArrayList<>();
 
-        XSSFWorkbook workbook = new XSSFWorkbook(stream);
-        XSSFSheet sheet = workbook.getSheetAt(0);
+        try (FileInputStream stream = new FileInputStream(filepath);
+             XSSFWorkbook workbook = new XSSFWorkbook(stream);) {
 
-        Iterator<Row> rowIterator = sheet.iterator();
+            XSSFSheet sheet = workbook.getSheetAt(0);
 
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
+            Iterator<Row> rowIterator = sheet.iterator();
 
-            if (row.getRowNum() == 0) continue;
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
 
-            Iterator<Cell> cellIterator = row.cellIterator();
+                if (row.getRowNum() == 0) continue;
 
-            String nome = "";
-            String emailString = "";
-            String telefoneString = "";
-            String cargo = "";
-            String departamento = "";
+                Iterator<Cell> cellIterator = row.cellIterator();
 
-            Email email = null;
-            Telefone telefone = null;
+                String nome = "";
+                String emailString = "";
+                String telefoneString = "";
+                String cargo = "";
+                String departamento = "";
 
-            while (cellIterator.hasNext()) {
+                Email email = null;
+                Telefone telefone = null;
 
-                Cell cell = cellIterator.next();
-                switch (cell.getColumnIndex()) {
-                    case 0:
-                        nome = cell.toString();
-                        break;
-                    case 1:
-                        emailString = cell.toString();
-                        email = new Email(emailString);
-                        break;
-                    case 2:
-                        telefoneString = cell.toString();
-                        telefone = new Telefone(telefoneString);
-                        break;
-                    case 3:
-                        cargo = cell.toString();
-                        break;
-                    case 4:
-                        departamento = cell.toString();
-                        break;
+                while (cellIterator.hasNext()) {
+
+                    Cell cell = cellIterator.next();
+                    switch (cell.getColumnIndex()) {
+                        case 0:
+                            nome = cell.toString();
+                            break;
+                        case 1:
+                            emailString = cell.toString();
+                            email = new Email(emailString);
+                            break;
+                        case 2:
+                            telefoneString = cell.toString();
+                            telefone = new Telefone(telefoneString);
+                            break;
+                        case 3:
+                            cargo = cell.toString();
+                            break;
+                        case 4:
+                            departamento = cell.toString();
+                            break;
+                    }
                 }
+                funcionarios.add(new CadastrarFuncionarioExcelRequest(nome, email, telefone, cargo, departamento));
             }
-            funcionarios.add(new Funcionario(nome, email, telefone, cargo, departamento));
+            return funcionarios;
         }
-        return funcionarios;
-    }
 
+    }
 }
 

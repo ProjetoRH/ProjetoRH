@@ -1,6 +1,6 @@
 package application.controller;
 
-import application.dto.CadastrarUsuarioRequest;
+import application.dto.usuario.CadastrarUsuarioRequest;
 import application.service.UsuarioService;
 
 public class UsuarioController {

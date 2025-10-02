@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface FuncionarioRepository {
 
-    int cadastrarFuncionario(Funcionario funcionario, int idCargo, int idUsuario) throws SQLException;
+    int cadastrarFuncionario(Funcionario funcionario) throws SQLException;
 
     void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException;
 

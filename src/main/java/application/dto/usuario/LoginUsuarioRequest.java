@@ -1,4 +1,4 @@
-package application.dto;
+package application.dto.usuario;
 
 import domain.model.valueobjects.Email;
 
