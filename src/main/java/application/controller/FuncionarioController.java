@@ -1,12 +1,13 @@
 package application.controller;
 
-import application.dto.funcionario.CadastrarFuncionarioResponse;
-import application.dto.funcionario.FuncionarioControllerRequest;
+import application.dto.funcionario.*;
 import application.service.CargoService;
 import application.service.FuncionarioService;
 import application.service.UsuarioService;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 public class FuncionarioController {
 
@@ -26,12 +27,14 @@ public class FuncionarioController {
 
     public CadastrarFuncionarioResponse cadastrarFuncionario(FuncionarioControllerRequest request) throws SQLException {
 
-        if (request == null) {
-            throw new IllegalArgumentException("O Fúncionario não pode ser nulo");
-        }
-
-
-
         return funcionarioService.cadastrarFuncionario(request);
+    }
+
+    public List<ListarTodosFuncionarioResponse> listarTodosFuncionarios() {
+        return funcionarioService.listarTodosFuncionarios();
+    }
+
+    public ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request) {
+        return funcionarioService.excluirFuncionario(request);
     }
 }

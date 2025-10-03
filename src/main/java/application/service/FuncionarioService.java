@@ -1,8 +1,7 @@
 package application.service;
 
 import application.dto.cargo.CadastrarCargoRequest;
-import application.dto.funcionario.CadastrarFuncionarioResponse;
-import application.dto.funcionario.FuncionarioControllerRequest;
+import application.dto.funcionario.*;
 import application.dto.usuario.CadastrarUsuarioRequest;
 import application.mapper.FuncionarioMapper;
 import domain.model.Funcionario;
@@ -10,6 +9,7 @@ import domain.repository.FuncionarioRepository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class FuncionarioService {
 
@@ -58,10 +58,23 @@ public class FuncionarioService {
 
         return mapper.toResponse(funcionario, idFuncionario);
     }
+
     public void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios) throws SQLException {
 
         if (funcionarios == null) {
             throw new IllegalArgumentException("Os Funcionarios Não Podem ser Nulos.");
         }
+    }
+
+    public List<ListarTodosFuncionarioResponse> listarTodosFuncionarios() {
+        return funcionarioRepository.listarTodosFuncionarios();
+    }
+
+    public ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request) {
+        if(request == null) {
+            throw new IllegalArgumentException("O Funcionario Não Pode ser Nulo");
+        }
+
+        return funcionarioRepository.excluirFuncionario(request);
     }
 }

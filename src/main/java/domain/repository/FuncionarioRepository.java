@@ -1,5 +1,9 @@
 package domain.repository;
 
+import application.dto.curso.ListarTodosCursoResponse;
+import application.dto.funcionario.ExcluirFuncionarioRequest;
+import application.dto.funcionario.ExcluirFuncionariosResponse;
+import application.dto.funcionario.ListarTodosFuncionarioResponse;
 import domain.model.Funcionario;
 
 import java.sql.SQLException;
@@ -10,11 +14,10 @@ public interface FuncionarioRepository {
 
     int cadastrarFuncionario(Funcionario funcionario) throws SQLException;
 
-    void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException;
+    // A FAZER: void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException;
 
-    Optional<Funcionario> buscarFuncionario(int id);
+    List<ListarTodosFuncionarioResponse> listarTodosFuncionarios();
 
-    void desativarFuncionario(int id);
+    ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request);
 
-    Optional<Funcionario> listarFuncionario();
 }

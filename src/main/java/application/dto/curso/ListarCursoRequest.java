@@ -1,6 +1,6 @@
 package application.dto.curso;
 
-public record CadastrarCursoResponse(
+public record ListarCursoRequest(
         String nome
-        ) {
+) {
 }
