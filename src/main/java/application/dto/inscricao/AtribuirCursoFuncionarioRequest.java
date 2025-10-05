@@ -1,4 +1,4 @@
-package application.dto.curso_funcionario;
+package application.dto.inscricao;
 
 import java.util.List;
 

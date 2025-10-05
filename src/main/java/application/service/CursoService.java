@@ -48,4 +48,12 @@ public class CursoService {
 
         return cursoRepository.listarTodosCurso();
     }
+
+    public EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("O Id do Curso Não Pode Ser Nulo.");
+        }
+
+        return cursoRepository.editarStatusCurso(request);
+    }
 }

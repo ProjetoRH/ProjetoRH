@@ -130,4 +130,35 @@ public class CursoReposityImpl implements CursoRepository {
         return todosOsCursos;
     }
 
+    @Override
+    public EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request) {
+        String query = """
+            UPDATE Curso
+            SET status = ?
+            WHERE id_curso = ?
+        """;
+
+        try(Connection conn = ConexaoFactory.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, request.status().toString());
+
+            stmt.setInt(2, request.idCurso());
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                String mensagem = "O status do Curso com ID " + request.idCurso() + " foi atualizado para " + request.status() + " com sucesso.";
+                return new EditarStatusCursoResponse(mensagem);
+            } else {
+                return new EditarStatusCursoResponse("Aviso: O Curso com ID " + request.idCurso() + " não foi encontrado ou o status já estava definido.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao editar o status do curso no banco de dados.", e);
+        }
+    }
+
+
 }

@@ -6,6 +6,7 @@ import application.dto.usuario.CadastrarUsuarioRequest;
 import application.mapper.FuncionarioMapper;
 import domain.model.Funcionario;
 import domain.repository.FuncionarioRepository;
+import shared.util.SenhaUtil;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,7 +33,9 @@ public class FuncionarioService {
             throw new IllegalArgumentException("Funcionário não pode ser nulo.");
         }
 
-        CadastrarUsuarioRequest usuarioRequest = new CadastrarUsuarioRequest(request.email());
+        // Gerar senha automática para o novo usuário
+        String senhaGerada = SenhaUtil.geraSenha();
+        CadastrarUsuarioRequest usuarioRequest = new CadastrarUsuarioRequest(request.email(), senhaGerada);
         int idUsuario = usuarioService.cadastrarUsuario(usuarioRequest);
         if (idUsuario <= 0) {
             throw new IllegalStateException("Usuário não foi cadastrado corretamente.");

@@ -19,6 +19,7 @@ public class CursoController {
     }
 
     public ExcluirCursoResponse excluirCurso(ExcluirCursoRequest request) {
+
         return cursoService.excluirCurso(request);
     }
 
@@ -27,7 +28,11 @@ public class CursoController {
     }
 
     public List<ListarTodosCursoResponse> listarTodosCurso() {
-        return cursoService.listarTodosCurso();
+         return cursoService.listarTodosCurso();
+    }
+
+    public EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request) {
+        return cursoService.editarStatusCurso(request);
     }
 
 }

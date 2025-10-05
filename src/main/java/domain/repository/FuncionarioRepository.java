@@ -14,7 +14,7 @@ public interface FuncionarioRepository {
 
     int cadastrarFuncionario(Funcionario funcionario) throws SQLException;
 
-    // A FAZER: void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException;
+    void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException;
 
     List<ListarTodosFuncionarioResponse> listarTodosFuncionarios();
 
