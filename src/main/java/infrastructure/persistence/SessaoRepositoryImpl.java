@@ -18,7 +18,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
 
     @Override
     public Sessao autenticarSessao(Usuario usuario) throws SQLException {
-        String query = "SELECT senha FROM Usuario WHERE email = ?";
+        String query = "SELECT senha , tipo FROM Usuario WHERE email = ?";
 
         try (Connection conn = ConexaoFactory.conectar();
              PreparedStatement stmt = conn.prepareStatement(query)) {

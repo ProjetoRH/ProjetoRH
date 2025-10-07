@@ -11,6 +11,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+
     public int cadastrarUsuario(CadastrarUsuarioRequest request) {
 
         if (request == null) {
