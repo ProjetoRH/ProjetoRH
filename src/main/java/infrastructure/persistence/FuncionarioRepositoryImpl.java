@@ -76,21 +76,23 @@ import java.util.Optional;
      public List<ListarTodosFuncionarioResponse> listarTodosFuncionarios() {
 
          String query = """
-                 SELECT f.id_funcionario, f.nome, c.nome_cargo AS nome\s
-                 FROM Funcionario f
-                 JOIN Cargo c ON f.id_cargo = c.id_cargo
-                 ORDER BY f.nome ASC
+                 SELECT f.id_funcionario,
+                            f.nome_funcionario,
+                            c.nome AS cargo
+                       FROM Funcionario f
+                       JOIN Cargo c ON f.id_cargo = c.id_cargo
+                   ORDER BY f.nome_funcionario ASC
                  """;
          List<ListarTodosFuncionarioResponse> funcionarios = new ArrayList<>();
 
          try (Connection conn = ConexaoFactory.conectar();
               PreparedStatement stmt = conn.prepareStatement(query);
-              ResultSet rs = stmt.executeQuery()) {
+              ResultSet rs = stmt.  executeQuery()) {
 
              while (rs.next()) {
                  funcionarios.add(new ListarTodosFuncionarioResponse(
-                         rs.getInt("id"),
-                         rs.getString("nome"),
+                         rs.getInt("id_funcionario"),
+                         rs.getString("nome_funcionario"),
                          rs.getString("cargo")
                  ));
              }

@@ -62,15 +62,23 @@ public class FuncionarioService {
         return mapper.toResponse(funcionario, idFuncionario);
     }
 
-    public void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios) throws SQLException {
+    public void cadastrarMultiplosFuncionarios(List<FuncionarioControllerRequest> request) throws SQLException {
 
-        if (funcionarios == null) {
+        if (request == null) {
             throw new IllegalArgumentException("Os Funcionarios Não Podem ser Nulos.");
+        }
+
+        for(FuncionarioControllerRequest r : request) {
+            cadastrarFuncionario(r);
         }
     }
 
     public List<ListarTodosFuncionarioResponse> listarTodosFuncionarios() {
         return funcionarioRepository.listarTodosFuncionarios();
+    }
+
+    public void editarFuncionarioFuncionario(EditarFuncionarioRequest request) throws SQLException {
+        funcionarioRepository.editarFuncionario(request);
     }
 
     public ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request) {

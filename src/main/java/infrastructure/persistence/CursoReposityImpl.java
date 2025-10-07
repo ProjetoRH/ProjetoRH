@@ -1,164 +1,164 @@
-package infrastructure.persistence;
+    package infrastructure.persistence;
 
-import application.dto.curso.*;
-import domain.model.Curso;
-import domain.model.enums.StatusCurso;
-import domain.model.enums.TipoUsuario;
-import domain.repository.CursoRepository;
-import infrastructure.database.ConexaoFactory;
+    import application.dto.curso.*;
+    import domain.model.Curso;
+    import domain.model.enums.StatusCurso;
+    import domain.model.enums.TipoUsuario;
+    import domain.repository.CursoRepository;
+    import infrastructure.database.ConexaoFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    import java.util.ArrayList;
+    import java.util.List;
 
-public class CursoReposityImpl implements CursoRepository {
+    public class CursoReposityImpl implements CursoRepository {
 
-    @Override
-    public CadastrarCursoResponse cadastrarCurso(Curso curso) {
-        String query = """
-                INSERT INTO Curso(nome, descricao, data_termino)
-                VALUES(?,?,?)
-                """;
+        @Override
+        public CadastrarCursoResponse cadastrarCurso(Curso curso) {
+            String query = """
+                    INSERT INTO Curso(nome, descricao, data_termino)
+                    VALUES(?,?,?)
+                    """;
 
-        try (Connection conn = ConexaoFactory.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+            try (Connection conn = ConexaoFactory.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, curso.getNome());
-            stmt.setString(2, curso.getDescricao());
-            stmt.setDate(3, curso.getData_fim());
+                stmt.setString(1, curso.getNome());
+                stmt.setString(2, curso.getDescricao());
+                stmt.setDate(3, curso.getData_fim());
 
-            stmt.executeUpdate();
+                stmt.executeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                return new CadastrarCursoResponse(rs.getString("descricao"));
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    return new CadastrarCursoResponse(rs.getString("descricao"));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-    }
 
-    @Override
-    public ExcluirCursoResponse excluirCurso(ExcluirCursoRequest request) {
+        @Override
+        public ExcluirCursoResponse excluirCurso(ExcluirCursoRequest request) {
 
-        String query = """
-                DELETE FROM Curso
-                WHERE nome = ?
-                """;
+            String query = """
+                    DELETE FROM Curso
+                    WHERE nome = ?
+                    """;
 
-        try (Connection conn = ConexaoFactory.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+            try (Connection conn = ConexaoFactory.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, request.nome());
+                stmt.setString(1, request.nome());
 
-            int linhasAfetadas = stmt.executeUpdate();
+                int linhasAfetadas = stmt.executeUpdate();
 
-            if(linhasAfetadas > 0) {
-                return new ExcluirCursoResponse("O Curso Excluido Com Sucesso: "+request.nome());
-            } else {
-                return new ExcluirCursoResponse("O Curso "+request.nome()+" Não Foi Encontrado");
+                if(linhasAfetadas > 0) {
+                    return new ExcluirCursoResponse("O Curso Excluido Com Sucesso: "+request.nome());
+                } else {
+                    return new ExcluirCursoResponse("O Curso "+request.nome()+" Não Foi Encontrado");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new ExcluirCursoResponse("Erro De Banco de Dados ao Tentar Excluir o Curso " + request.nome());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ExcluirCursoResponse("Erro De Banco de Dados ao Tentar Excluir o Curso " + request.nome());
         }
-    }
 
-    @Override
-    public List<ListarCursoResponse> listarCurso(ListarCursoRequest request) {
-        String query = """
-                SELECT status FROM Curso
-                WHERE nome ILIKE ?
-                """;
+        @Override
+        public List<ListarCursoResponse> listarCurso(ListarCursoRequest request) {
+            String query = """
+                    SELECT status FROM Curso
+                    WHERE nome ILIKE ?
+                    """;
 
-        List<ListarCursoResponse> respostas = new ArrayList<>();
+            List<ListarCursoResponse> respostas = new ArrayList<>();
 
-        try (Connection conn = ConexaoFactory.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+            try (Connection conn = ConexaoFactory.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, "%" + request.nome() + "%");
+                stmt.setString(1, "%" + request.nome() + "%");
 
-            try (ResultSet rs = stmt.executeQuery()) {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        String statusDoCursoString = rs.getString("status");
+                        String nome = rs.getString("nome");
+
+                        StatusCurso statusCurso = StatusCurso.valueOf(statusDoCursoString.toUpperCase());
+
+                        respostas.add(new ListarCursoResponse(nome, statusCurso));
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return respostas;
+        }
+
+        @Override
+        public List<ListarTodosCursoResponse> listarTodosCurso() {
+            String query = """
+                    SELECT nome, status
+                    FROM Curso
+                    ORDER BY nome ASC
+                    """;
+
+            List<ListarTodosCursoResponse> todosOsCursos = new ArrayList<>();
+
+            try (Connection conn = ConexaoFactory.conectar();
+                 PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+
                 while (rs.next()) {
-                    String statusDoCursoString = rs.getString("status");
                     String nome = rs.getString("nome");
+                    String statusDoCursoString = rs.getString("status");
 
                     StatusCurso statusCurso = StatusCurso.valueOf(statusDoCursoString.toUpperCase());
 
-                    respostas.add(new ListarCursoResponse(nome, statusCurso));
+                    todosOsCursos.add(
+                            new ListarTodosCursoResponse(nome, statusCurso)
+                    );
                 }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return todosOsCursos;
         }
 
-        return respostas;
-    }
+        @Override
+        public EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request) {
+            String query = """
+                UPDATE Curso
+                SET status = ?
+                WHERE id_curso = ?
+            """;
 
-    @Override
-    public List<ListarTodosCursoResponse> listarTodosCurso() {
-        String query = """
-                SELECT nome, status
-                FROM Curso
-                ORDER BY nome ASC
-                """;
+            try(Connection conn = ConexaoFactory.conectar();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
-        List<ListarTodosCursoResponse> todosOsCursos = new ArrayList<>();
+                stmt.setString(1, request.status().toString());
 
-        try (Connection conn = ConexaoFactory.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+                stmt.setInt(2, request.idCurso());
 
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                String statusDoCursoString = rs.getString("status");
+                int linhasAfetadas = stmt.executeUpdate();
 
-                StatusCurso statusCurso = StatusCurso.valueOf(statusDoCursoString.toUpperCase());
+                if (linhasAfetadas > 0) {
+                    String mensagem = "O status do Curso com ID " + request.idCurso() + " foi atualizado para " + request.status() + " com sucesso.";
+                    return new EditarStatusCursoResponse(mensagem);
+                } else {
+                    return new EditarStatusCursoResponse("Aviso: O Curso com ID " + request.idCurso() + " não foi encontrado ou o status já estava definido.");
+                }
 
-                todosOsCursos.add(
-                        new ListarTodosCursoResponse(nome, statusCurso)
-                );
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao editar o status do curso no banco de dados.", e);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return todosOsCursos;
+
     }
-
-    @Override
-    public EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request) {
-        String query = """
-            UPDATE Curso
-            SET status = ?
-            WHERE id_curso = ?
-        """;
-
-        try(Connection conn = ConexaoFactory.conectar();
-            PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, request.status().toString());
-
-            stmt.setInt(2, request.idCurso());
-
-            int linhasAfetadas = stmt.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                String mensagem = "O status do Curso com ID " + request.idCurso() + " foi atualizado para " + request.status() + " com sucesso.";
-                return new EditarStatusCursoResponse(mensagem);
-            } else {
-                return new EditarStatusCursoResponse("Aviso: O Curso com ID " + request.idCurso() + " não foi encontrado ou o status já estava definido.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao editar o status do curso no banco de dados.", e);
-        }
-    }
-
-
-}

@@ -33,6 +33,10 @@ public class UsuarioService {
 
         Usuario usuario = mapper.toEntity(request);
 
+        String senha = SenhaUtil.geraSenha();
+
+        usuario.setSenha(senha);
+
         System.out.println("DEBUG senha: " + usuario.getSenha());
 
         String senhaHash = SenhaUtil.hashSenha(usuario.getSenha());

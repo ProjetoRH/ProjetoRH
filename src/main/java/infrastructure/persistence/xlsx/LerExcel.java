@@ -1,6 +1,7 @@
 package infrastructure.persistence.xlsx;
 
 import application.dto.funcionario.CadastrarFuncionarioExcelRequest;
+import application.dto.funcionario.FuncionarioControllerRequest;
 import domain.model.valueobjects.Email;
 import domain.model.valueobjects.Telefone;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class LerExcel {
 
-    public List<CadastrarFuncionarioExcelRequest> lerExcel(String filepath) throws IOException {
+    public List<FuncionarioControllerRequest> lerExcel(String filepath) throws IOException {
 
-        List<CadastrarFuncionarioExcelRequest> funcionarios = new ArrayList<>();
+        List<FuncionarioControllerRequest> funcionarios = new ArrayList<>();
 
         try (FileInputStream stream = new FileInputStream(filepath);
              XSSFWorkbook workbook = new XSSFWorkbook(stream);) {
@@ -66,7 +67,7 @@ public class LerExcel {
                             break;
                     }
                 }
-                funcionarios.add(new CadastrarFuncionarioExcelRequest(nome, email, telefone, cargo, departamento));
+                funcionarios.add(new FuncionarioControllerRequest(nome, email, telefone, cargo, departamento));
             }
             return funcionarios;
         }

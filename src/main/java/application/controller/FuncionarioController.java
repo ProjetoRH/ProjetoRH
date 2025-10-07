@@ -40,6 +40,7 @@ public class FuncionarioController {
         return funcionarioService.listarTodosFuncionarios();
     }
 
+
     public ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request) {
         return funcionarioService.excluirFuncionario(request);
     }
@@ -53,4 +54,5 @@ public class FuncionarioController {
     public DetalheCursoResponse detalharCurso(int idFuncionario, int idCurso) throws SQLException {
         return inscricaoService.consultarDetalheCurso(idFuncionario, idCurso);
     }
+
 }

@@ -1,59 +1,59 @@
-package view;// view/LoginView.java
+package view;
 
-// ... imports ...
 import application.sessao.SessaoSistema;
 import domain.model.Usuario;
-import domain.model.enums.TipoUsuario; // Novo import necessário
+import domain.model.enums.TipoUsuario;
 import domain.model.valueobjects.Email;
 import view.AdminMenuView;
+import view.FuncionarioMenuView;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import shared.exceptions.EmailInvalidoException; // 🔹 Import necessário
 
 public class LoginView {
     private final Scanner sc = new Scanner(System.in);
 
-    // Mantenha o SessaoController apenas se for usá-lo, 
-    // mas o SessaoSistema já faz o trabalho de orquestração.
-    // SessaoController sessaoController = new SessaoController(); 
-
     public void exibir() throws SQLException {
-
         System.out.println("=== Login ===");
-        while (true) {
+
+        try {
             System.out.print("E-mail: ");
             String emailString = sc.nextLine();
             System.out.print("Senha: ");
             String senha = sc.nextLine();
 
+            // 🔹 Se for inválido, cai no catch (EmailInvalidoException)
             Email email = new Email(emailString);
+
             Usuario usuarioTentativa = new Usuario();
             usuarioTentativa.setEmail(email);
             usuarioTentativa.setSenha(senha);
 
             try {
-
                 SessaoSistema.obterInstancia().iniciarSessao(usuarioTentativa);
-
                 System.out.println("Login efetuado com sucesso!");
 
                 TipoUsuario tipo = SessaoSistema.obterInstancia().obterTipoUsuarioAtual();
 
                 if (tipo == TipoUsuario.ADMIN) {
                     new AdminMenuView().exibir();
-
                     return;
                 } else if (tipo == TipoUsuario.FUNCIONARIO) {
+                    new FuncionarioMenuView().exibir();
                     return;
                 }
-
-                return;
 
             } catch (SecurityException e) {
                 System.out.println("Credenciais inválidas. Tente novamente.");
             } catch (SQLException e) {
                 System.out.println("Erro interno ao autenticar. Tente novamente ou contate o suporte.");
             }
+
+        } catch (EmailInvalidoException e) { // ✅ Corrigido aqui!
+            System.out.println(e.getMessage());
+            System.out.println("Tente novamente.\n");
+            exibir(); // opcional: chama de novo para tentar novamente
         }
     }
 }
