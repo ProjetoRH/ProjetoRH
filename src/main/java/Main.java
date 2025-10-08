@@ -1,4 +1,5 @@
 import shared.util.SenhaUtil;
+import view.GerenciarCursosView;
 import view.GerenciarFuncionariosView;
 import view.LoginView;
 
@@ -8,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         while (true) {
-            new GerenciarFuncionariosView().exibir();
+            new GerenciarCursosView().exibir();
         }
 
 

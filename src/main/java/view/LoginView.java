@@ -23,7 +23,6 @@ public class LoginView {
             System.out.print("Senha: ");
             String senha = sc.nextLine();
 
-            // 🔹 Se for inválido, cai no catch (EmailInvalidoException)
             Email email = new Email(emailString);
 
             Usuario usuarioTentativa = new Usuario();
@@ -50,10 +49,10 @@ public class LoginView {
                 System.out.println("Erro interno ao autenticar. Tente novamente ou contate o suporte.");
             }
 
-        } catch (EmailInvalidoException e) { // ✅ Corrigido aqui!
+        } catch (EmailInvalidoException e) {
             System.out.println(e.getMessage());
             System.out.println("Tente novamente.\n");
-            exibir(); // opcional: chama de novo para tentar novamente
+            exibir();
         }
     }
 }

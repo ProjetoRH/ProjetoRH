@@ -14,17 +14,20 @@
     import java.util.ArrayList;
     import java.util.List;
 
+    import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
     public class CursoReposityImpl implements CursoRepository {
 
         @Override
         public CadastrarCursoResponse cadastrarCurso(Curso curso) {
             String query = """
-                    INSERT INTO Curso(nome, descricao, data_termino)
-                    VALUES(?,?,?)
-                    """;
+            INSERT INTO Curso(nome, descricao, data_termino)
+            VALUES(?,?,?)
+            """;
 
             try (Connection conn = ConexaoFactory.conectar();
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                 // 1. ADICIONAR O FLAG AQUI
+                 PreparedStatement stmt = conn.prepareStatement(query, RETURN_GENERATED_KEYS)) {
 
                 stmt.setString(1, curso.getNome());
                 stmt.setString(2, curso.getDescricao());
@@ -33,13 +36,20 @@
                 stmt.executeUpdate();
 
                 try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    return new CadastrarCursoResponse(rs.getString("descricao"));
+                    if (rs.next()) {
+                        // 2. LER O ID GERADO, NÃO A 'descricao'
+                        int idGerado = rs.getInt(1); // Usa índice 1 para a primeira coluna gerada
+
+                        // Retorna o Response com o ID do curso recém-criado
+                        return new CadastrarCursoResponse(curso.getNome());
+                        // NOTA: O seu DTO CadastrarCursoResponse provavelmente precisa ser ajustado para receber o ID
+                    }
+                    throw new SQLException("Falha ao obter o ID do curso após a inserção.");
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-
         @Override
         public ExcluirCursoResponse excluirCurso(ExcluirCursoRequest request) {
 
@@ -101,7 +111,7 @@
         @Override
         public List<ListarTodosCursoResponse> listarTodosCurso() {
             String query = """
-                    SELECT nome, status
+                    SELECT nome, status, id_curso
                     FROM Curso
                     ORDER BY nome ASC
                     """;
@@ -113,13 +123,14 @@
                  ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
+                    int idCurso = rs.getInt("id_curso");
                     String nome = rs.getString("nome");
                     String statusDoCursoString = rs.getString("status");
 
                     StatusCurso statusCurso = StatusCurso.valueOf(statusDoCursoString.toUpperCase());
 
                     todosOsCursos.add(
-                            new ListarTodosCursoResponse(nome, statusCurso)
+                            new ListarTodosCursoResponse(idCurso ,nome, statusCurso)
                     );
                 }
 

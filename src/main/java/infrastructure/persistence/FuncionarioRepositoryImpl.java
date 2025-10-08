@@ -44,33 +44,6 @@ import java.util.Optional;
          }
      }
 
-     @Override
-    public void cadastrarMultiplosFuncionarios(List<Funcionario> funcionarios, int idCargo, int idUsuario) throws SQLException {
-
-        String query = """
-                INSERT INTO Funcionario (nome_funcionario, email_funcionario, telefone, id_cargo, id_usuario)
-                VALUES (?, ?, ?, ?, ?)
-            """;
-        try (Connection conn = ConexaoFactory.conectar();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            for(Funcionario funcionario : funcionarios) {
-                stmt.setString(1, funcionario.getNome());
-                stmt.setString(2, funcionario.getEmail().obterEmail());
-                stmt.setString(3, funcionario.getTelefone().obterTelefone());
-                stmt.setInt(4, funcionario.getIdCargo());
-                stmt.setInt(5, funcionario.getIdUsuario());
-
-                stmt.addBatch();
-            }
-            stmt.executeBatch();
-
-
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
-    }
-
 
      @Override
      public List<ListarTodosFuncionarioResponse> listarTodosFuncionarios() {

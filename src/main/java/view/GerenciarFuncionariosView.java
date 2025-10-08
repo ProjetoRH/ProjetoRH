@@ -22,8 +22,7 @@ public class GerenciarFuncionariosView {
             System.out.println("[1] Listar Funcionários");
             System.out.println("[2] Cadastrar Novo Funcionário");
             System.out.println("[3] Cadastrar Múltiplos (via Excel)");
-            System.out.println("[4] Editar Funcionário");
-            System.out.println("[5] Deletar Funcionário");
+            System.out.println("[4] Deletar Funcionário");
             System.out.println("[0] Voltar");
             System.out.print("Escolha: ");
             String opcao = scanner.nextLine();
@@ -39,10 +38,7 @@ public class GerenciarFuncionariosView {
                     cadastrarMultiplosFuncionarios();
                     break;
                 case "4":
-                    // Chamar método para editar funcionário
-                    break;
-                case "5":
-                    // Chamar método para deletar funcionário
+                    deletarFuncionario();
                     break;
                 case "0":
                     return;
@@ -52,7 +48,7 @@ public class GerenciarFuncionariosView {
         }
     }
 
-    private void listarFuncionarios() {
+    public void listarFuncionarios() {
         try {
             List<ListarTodosFuncionarioResponse> funcionarios = funcionarioController.listarTodosFuncionarios();
 
@@ -135,5 +131,15 @@ public class GerenciarFuncionariosView {
         }
     }
 
+    public void deletarFuncionario() {
+
+        listarFuncionarios();
+        System.out.println("Digite o ID do funcionario: ");
+        int idFuncionario = scanner.nextInt();
+
+        ExcluirFuncionarioRequest request = new ExcluirFuncionarioRequest(idFuncionario);
+
+        funcionarioController.excluirFuncionario(request);
+    }
 
 }

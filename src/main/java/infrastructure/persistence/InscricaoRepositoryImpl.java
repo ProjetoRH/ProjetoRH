@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InscricaoRepositoryImpl implements InscricaoRepository {
-
     @Override
     public AtribuirCursoFuncionarioResponse atribuirCursoFuncionario(AtribuirCursoFuncionarioRequest request) {
         int idCurso = request.idCurso();
@@ -30,6 +29,10 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
         String checkIfExistsSql = "SELECT COUNT(*) FROM Curso_Funcionario WHERE id_curso = ? AND id_funcionario = ?";
         String insertSql = "INSERT INTO Curso_Funcionario (id_curso, id_funcionario, status) VALUES (?, ?, ?)";
 
+        // Defina o status inicial aqui. O padrão para um curso atribuído é geralmente 'PENDENTE'.
+        // Se você tiver um Enum StatusCursoPessoal, use StatusCursoPessoal.PENDENTE.toString().
+        final String STATUS_INICIAL = "PENDENTE";
+
         try (Connection conn = ConexaoFactory.conectar()) {
 
             conn.setAutoCommit(false);
@@ -39,17 +42,24 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
 
                 for (Integer idFuncionario : idFuncionarios) {
 
+                    // 1. Lógica de Checagem de Existência
                     checkStmt.setInt(1, idCurso);
                     checkStmt.setInt(2, idFuncionario);
-                    ResultSet rs = checkStmt.executeQuery();
-                    if (rs.next() && rs.getInt(1) > 0) {
-                        System.out.println("Associação para o funcionário ID " + idFuncionario + " já existe. Ignorando.");
-                        funcionariosJaExistentes++;
-                        continue;
+                    // É fundamental reiniciar o ResultSet para cada execução
+                    try (ResultSet rs = checkStmt.executeQuery()) {
+                        if (rs.next() && rs.getInt(1) > 0) {
+                            System.out.println("Associação para o funcionário ID " + idFuncionario + " já existe. Ignorando.");
+                            funcionariosJaExistentes++;
+                            continue;
+                        }
                     }
 
+                    // 2. Preparação para Inserção
                     insertStmt.setInt(1, idCurso);
                     insertStmt.setInt(2, idFuncionario);
+                    // ✅ CORREÇÃO APLICADA: Definindo o terceiro parâmetro (status)
+                    insertStmt.setString(3, STATUS_INICIAL);
+
                     insertStmt.addBatch();
                 }
 
@@ -71,6 +81,7 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
 
             } catch (SQLException e) {
                 System.err.println("Erro de SQL ao atribuir funcionários. Desfazendo a transação.");
+                // Você já tem o rollback, o que é ótimo para transações.
                 conn.rollback();
                 e.printStackTrace();
                 return new AtribuirCursoFuncionarioResponse("Erro ao atribuir funcionários: " + e.getMessage());

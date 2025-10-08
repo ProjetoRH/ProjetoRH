@@ -77,10 +77,6 @@ public class FuncionarioService {
         return funcionarioRepository.listarTodosFuncionarios();
     }
 
-    public void editarFuncionarioFuncionario(EditarFuncionarioRequest request) throws SQLException {
-        funcionarioRepository.editarFuncionario(request);
-    }
-
     public ExcluirFuncionariosResponse excluirFuncionario(ExcluirFuncionarioRequest request) {
         if(request == null) {
             throw new IllegalArgumentException("O Funcionario Não Pode ser Nulo");
