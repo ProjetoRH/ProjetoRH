@@ -42,10 +42,9 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
 
                 for (Integer idFuncionario : idFuncionarios) {
 
-                    // 1. Lógica de Checagem de Existência
                     checkStmt.setInt(1, idCurso);
                     checkStmt.setInt(2, idFuncionario);
-                    // É fundamental reiniciar o ResultSet para cada execução
+
                     try (ResultSet rs = checkStmt.executeQuery()) {
                         if (rs.next() && rs.getInt(1) > 0) {
                             System.out.println("Associação para o funcionário ID " + idFuncionario + " já existe. Ignorando.");

@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         while (true) {
-            new GerenciarCursosView().exibir();
+            new GerenciarFuncionariosView().exibir();
         }
 
 

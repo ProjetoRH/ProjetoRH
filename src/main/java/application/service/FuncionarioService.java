@@ -33,7 +33,6 @@ public class FuncionarioService {
             throw new IllegalArgumentException("Funcionário não pode ser nulo.");
         }
 
-        // Gerar senha automática para o novo usuário
         String senhaGerada = SenhaUtil.geraSenha();
         CadastrarUsuarioRequest usuarioRequest = new CadastrarUsuarioRequest(request.email(), senhaGerada);
         int idUsuario = usuarioService.cadastrarUsuario(usuarioRequest);
