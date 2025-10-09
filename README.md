@@ -29,100 +29,26 @@ O ProjetoRH é um sistema projetado para:
 │       │   ├── Main.java
 │       │   ├── 📁 application
 │       │   │   ├── 📁 controller
-│       │   │   │   ├── CursoController.java
-│       │   │   │   ├── FuncionarioController.java
-│       │   │   │   ├── InscricaoController.java
-│       │   │   │   ├── SessaoController.java
-│       │   │   │   └── UsuarioController.java
 │       │   │   ├── 📁 dto
 │       │   │   │   ├── 📁 cargo
-│       │   │   │   │   └── CadastrarCargoRequest.java
 │       │   │   │   ├── 📁 curso
-│       │   │   │   │   ├── AtualizarStatusCursoRequest.java
-│       │   │   │   │   ├── AtualizarStatusCursoResponse.java
-│       │   │   │   │   ├── CadastrarCursoRequest.java
-│       │   │   │   │   ├── CadastrarCursoResponse.java
-│       │   │   │   │   ├── CursoDetalheDTO.java
-│       │   │   │   │   ├── CursoStatusDTO.java
-│       │   │   │   │   ├── DetalheCursoResponse.java
-│       │   │   │   │   ├── EditarStatusCursoRequest.java
-│       │   │   │   │   ├── EditarStatusCursoResponse.java
-│       │   │   │   │   ├── ExcluirCursoRequest.java
-│       │   │   │   │   ├── ExcluirCursoResponse.java
-│       │   │   │   │   ├── ListarCursoRequest.java
-│       │   │   │   │   ├── ListarCursoResponse.java
-│       │   │   │   │   ├── ListarMeusCursosResponse.java
-│       │   │   │   │   └── ListarTodosCursoResponse.java
 │       │   │   │   ├── 📁 funcionario
-│       │   │   │   │   ├── CadastrarFuncionarioExcelRequest.java
-│       │   │   │   │   ├── CadastrarFuncionarioRequest.java
-│       │   │   │   │   ├── CadastrarFuncionarioResponse.java
-│       │   │   │   │   ├── ExcluirFuncionarioRequest.java
-│       │   │   │   │   ├── ExcluirFuncionariosResponse.java
-│       │   │   │   │   ├── FuncionarioControllerRequest.java
-│       │   │   │   │   └── ListarTodosFuncionarioResponse.java
 │       │   │   │   ├── 📁 inscricao
-│       │   │   │   │   ├── AtribuirCursoCargoRequest.java
-│       │   │   │   │   ├── AtribuirCursoCargoResponse.java
-│       │   │   │   │   ├── AtribuirCursoFuncionarioRequest.java
-│       │   │   │   │   └── AtribuirCursoFuncionarioResponse.java
 │       │   │   │   └── 📁 usuario
-│       │   │   │       ├── CadastrarUsuarioRequest.java
-│       │   │   │       └── LoginUsuarioRequest.java
 │       │   │   ├── 📁 factory
-│       │   │   │   └── AppFactory.java
 │       │   │   ├── 📁 mapper
-│       │   │   │   ├── CursoMapper.java
-│       │   │   │   ├── FuncionarioMapper.java
-│       │   │   │   ├── SessaoMapper.java
-│       │   │   │   └── UsuarioMapper.java
 │       │   │   ├── 📁 service
-│       │   │   │   ├── CargoService.java
-│       │   │   │   ├── CursoService.java
-│       │   │   │   ├── FuncionarioService.java
-│       │   │   │   ├── InscricaoService.java
-│       │   │   │   ├── SessaoService.java
-│       │   │   │   └── UsuarioService.java
 │       │   │   └── 📁 sessao
-│       │   │       └── SessaoSistema.java
 │       │   ├── 📁 domain
 │       │   │   ├── 📁 model
-│       │   │   │   ├── Curso.java
-│       │   │   │   ├── Funcionario.java
-│       │   │   │   ├── Sessao.java
-│       │   │   │   ├── Usuario.java
 │       │   │   │   ├── 📁 enums
-│       │   │   │   │   ├── StatusCurso.java
-│       │   │   │   │   ├── StatusCursoPessoal.java
-│       │   │   │   │   └── TipoUsuario.java
 │       │   │   │   └── 📁 valueobjects
-│       │   │   │       ├── Email.java
-│       │   │   │       └── Telefone.java
 │       │   │   └── 📁 repository
-│       │   │       ├── CargoRepository.java
-│       │   │       ├── CursoRepository.java
-│       │   │       ├── FuncionarioRepository.java
-│       │   │       ├── InscricaoRepository.java
-│       │   │       ├── SessaoRepository.java
-│       │   │       └── UsuarioRepository.java
 │       │   ├── 📁 infrastructure
 │       │   │   ├── 📁 database
-│       │   │   │   └── ConexaoFactory.java
 │       │   │   └── 📁 persistence
-│       │   │       ├── CargoRepositoryImpl.java
-│       │   │       ├── CursoReposityImpl.java
-│       │   │       ├── FuncionarioRepositoryImpl.java
-│       │   │       ├── InscricaoRepositoryImpl.java
-│       │   │       ├── SessaoRepositoryImpl.java
-│       │   │       └── UsuarioRepositoryImpl.java
 │       │   └── 📁 view
-│       │       ├── GerenciarCursosView.java
-│       │       ├── MenuPrincipalView.java
-│       │       ├── MenuRHView.java
-│       │       ├── MenuTreinamentosView.java
-│       │       └── MenuUsuarioView.java
 │       └── 📁 resources
-│           └── application.properties
 └── target/
 </pre>
 
@@ -136,7 +62,7 @@ O ProjetoRH é um sistema projetado para:
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" height="40" />
 </div>
 
-- [**Java 21**](https://www.oracle.com/java/) — Desenvolvimento do backend 
+- [**Java 22**](https://www.oracle.com/java/) — Desenvolvimento do backend 
 - [**MySQL**](https://www.mysql.com/) — Banco de dados utilizado 
 - [**Git**](https://git-scm.com/) — Versionamento e colaboração 
 
