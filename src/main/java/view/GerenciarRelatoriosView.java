@@ -16,7 +16,6 @@ import java.util.Scanner;
 
 public class GerenciarRelatoriosView {
 
-    // É uma boa prática inicializar as dependências no construtor
     private final CursoController cursoController;
     private final RelatorioController relatorioController;
     private final Scanner scanner = new Scanner(System.in);
@@ -36,7 +35,7 @@ public class GerenciarRelatoriosView {
 
             System.out.print("Escolha: ");
             try {
-                int opcao = Integer.parseInt(scanner.nextLine()); // MELHORIA: Evita bugs do scanner
+                int opcao = Integer.parseInt(scanner.nextLine());
 
                 switch (opcao) {
                     case 1:

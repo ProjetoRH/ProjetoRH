@@ -25,7 +25,7 @@
             """;
 
             try (Connection conn = ConexaoFactory.conectar();
-                 // 1. ADICIONAR O FLAG AQUI
+
                  PreparedStatement stmt = conn.prepareStatement(query, RETURN_GENERATED_KEYS)) {
 
                 stmt.setString(1, curso.getNome());
@@ -36,12 +36,11 @@
 
                 try (ResultSet rs = stmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        // 2. LER O ID GERADO, NÃO A 'descricao'
-                        int idGerado = rs.getInt(1); // Usa índice 1 para a primeira coluna gerada
 
-                        // Retorna o Response com o ID do curso recém-criado
+                        int idGerado = rs.getInt(1);
+
+
                         return new CadastrarCursoResponse(curso.getNome());
-                        // NOTA: O seu DTO CadastrarCursoResponse provavelmente precisa ser ajustado para receber o ID
                     }
                     throw new SQLException("Falha ao obter o ID do curso após a inserção.");
                 }
