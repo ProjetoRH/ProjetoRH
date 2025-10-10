@@ -23,7 +23,7 @@ public class RelatorioRepositoryImpl implements RelatorioRepository {
             c.status AS status_curso,
             COUNT(cf.id_funcionario) AS total_inscritos,
             COUNT(CASE WHEN cf.status = 'CONCLUIDO' THEN 1 END) AS total_concluidos,
-            COUNT(CASE WHEN cf.status = 'PENDENTE' THEN 1 END) AS total_pendentes
+            COUNT(CASE WHEN cf.status IN ('PENDENTE','EM_ANDAMENTO') THEN 1 END) AS total_pendentes
         FROM Curso c
         LEFT JOIN Curso_Funcionario cf ON c.id_curso = cf.id_curso
         GROUP BY c.id_curso, c.nome, c.status

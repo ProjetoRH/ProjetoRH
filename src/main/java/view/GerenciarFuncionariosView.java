@@ -75,6 +75,8 @@ public class GerenciarFuncionariosView {
 
     private CadastrarFuncionarioResponse cadastrarFuncionario() throws SQLException {
 
+        scanner.nextLine();
+
         System.out.println("Digite o nome: ");
         String nome = scanner.nextLine();
 

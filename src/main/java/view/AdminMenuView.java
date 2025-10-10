@@ -28,6 +28,7 @@ public class AdminMenuView {
                     break;
                 case 3:
                     new GerenciarRelatoriosView().exibir();
+                    break;
                 case 0:
                     SessaoSistema.obterInstancia().encerrarSessao();
                     return;

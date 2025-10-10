@@ -35,7 +35,7 @@ public class GerenciarRelatoriosView {
 
             System.out.print("Escolha: ");
             try {
-                int opcao = Integer.parseInt(scanner.nextLine());
+                int opcao = scanner.nextInt();
 
                 switch (opcao) {
                     case 1:
@@ -109,7 +109,7 @@ public class GerenciarRelatoriosView {
 
             while (true) {
                 System.out.print("Escolha: ");
-                int escolha = Integer.parseInt(scanner.nextLine());
+                int escolha = scanner.nextInt();
                 if (escolha == 0) return;
                 if (escolha > 0 && escolha <= cursos.size()) {
                     int idCursoSelecionado = cursos.get(escolha - 1).idCurso();
@@ -154,7 +154,7 @@ public class GerenciarRelatoriosView {
 
             while (true) {
                 System.out.print("Escolha: ");
-                int escolha = Integer.parseInt(scanner.nextLine());
+                int escolha = scanner.nextInt();
                 if (escolha == 0) return;
 
                 if (escolha > 0 && escolha <= cursos.size()) {
