@@ -3,7 +3,7 @@ package domain.model.valueobjects;
 import shared.exceptions.EmailInvalidoException;
 
 public class Email {
-    private final String email;
+    private String email;
 
     public Email(String email) {
         if (!validarEmail(email)) {
@@ -19,5 +19,9 @@ public class Email {
 
     public String obterEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

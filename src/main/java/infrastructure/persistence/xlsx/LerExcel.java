@@ -25,7 +25,6 @@ public class LerExcel {
              XSSFWorkbook workbook = new XSSFWorkbook(stream);) {
 
             XSSFSheet sheet = workbook.getSheetAt(0);
-
             Iterator<Row> rowIterator = sheet.iterator();
 
             while (rowIterator.hasNext()) {
@@ -36,8 +35,6 @@ public class LerExcel {
                 Iterator<Cell> cellIterator = row.cellIterator();
 
                 String nome = "";
-                String emailString = "";
-                String telefoneString = "";
                 String cargo = "";
                 String departamento = "";
 
@@ -52,12 +49,16 @@ public class LerExcel {
                             nome = cell.toString();
                             break;
                         case 1:
-                            emailString = cell.toString();
-                            email = new Email(emailString);
+                            String emailString = cell.toString();
+                            if (!emailString.isEmpty()) {
+                                email = new Email(emailString);
+                            }
                             break;
                         case 2:
-                            telefoneString = cell.toString();
-                            telefone = new Telefone(telefoneString);
+                            String telefoneString = cell.toString();
+                            if (!telefoneString.isEmpty()) {
+                                telefone = new Telefone(telefoneString);
+                            }
                             break;
                         case 3:
                             cargo = cell.toString();
@@ -71,7 +72,6 @@ public class LerExcel {
             }
             return funcionarios;
         }
-
     }
 }
 

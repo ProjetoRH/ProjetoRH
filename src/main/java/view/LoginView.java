@@ -38,7 +38,7 @@ public class LoginView {
                 if (tipo == TipoUsuario.ADMIN) {
                     new AdminMenuView().exibir();
                     return;
-                } else if (tipo == TipoUsuario.FUNCIONARIO) {
+                } else if (tipo == TipoUsuario.USUARIO) {
                     new FuncionarioMenuView().exibir();
                     return;
                 }

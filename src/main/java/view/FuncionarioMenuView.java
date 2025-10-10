@@ -12,13 +12,13 @@ public class FuncionarioMenuView {
             System.out.println("[1] Ver Meus Cursos");
             System.out.println("[0] Logout");
             System.out.print("Escolha: ");
-            String opcao = scanner.nextLine();
+            int opcao = scanner.nextInt();
 
             switch (opcao) {
-                case "1":
+                case 1:
                     new MeusCursosView().exibir();
                     break;
-                case "0":
+                case 0:
                     SessaoSistema.obterInstancia().encerrarSessao();
                     return;
                 default:

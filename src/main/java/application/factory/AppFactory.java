@@ -6,12 +6,7 @@ import application.service.*;
 import domain.repository.*;
 import infrastructure.persistence.*;
 
-/**
- * Fábrica central responsável por criar e gerenciar instâncias únicas
- * de Services, Controllers, Repositories e Mappers.
- *
- * Serve como substituto leve de um contêiner de injeção de dependências (ex: Spring).
- */
+
 public class AppFactory {
 
     // ==== MAPPERS ====

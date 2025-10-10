@@ -25,22 +25,24 @@ public class GerenciarFuncionariosView {
             System.out.println("[4] Deletar Funcionário");
             System.out.println("[0] Voltar");
             System.out.print("Escolha: ");
-            String opcao = scanner.nextLine();
+            int opcao = scanner.nextInt();
+
+            scanner.nextLine();
 
             switch (opcao) {
-                case "1":
+                case 1:
                     listarFuncionarios();
                     break;
-                case "2":
+                case 2:
                     cadastrarFuncionario();
                     break;
-                case "3":
+                case 3:
                     cadastrarMultiplosFuncionarios();
                     break;
-                case "4":
+                case 4:
                     deletarFuncionario();
                     break;
-                case "0":
+                case 0:
                     return;
                 default:
                     System.out.println("Opção inválida.");

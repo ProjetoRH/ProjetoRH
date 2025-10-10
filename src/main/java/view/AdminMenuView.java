@@ -16,16 +16,16 @@ public class AdminMenuView {
             System.out.println("[2] Gerenciar Cursos");
             System.out.println("[0] Logout");
             System.out.print("Escolha: ");
-            String opcao = scanner.nextLine();
+            int opcao = scanner.nextInt();
 
             switch (opcao) {
-                case "1":
+                case 1:
                     new GerenciarFuncionariosView().exibir();
                     break;
-                case "2":
+                case 2:
                     new GerenciarCursosView().exibir();
                     break;
-                case "0":
+                case 0:
                     SessaoSistema.obterInstancia().encerrarSessao();
                     return;
                 default:

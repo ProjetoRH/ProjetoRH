@@ -35,25 +35,25 @@ public class GerenciarCursosView {
             System.out.println("[5] Configurar Automação de Curso por Cargo");
             System.out.println("[0] Voltar");
             System.out.print("Escolha: ");
-            String opcao = scanner.nextLine();
+            int opcao = scanner.nextInt();
 
             switch (opcao) {
-                case "1":
+                case 1:
                     listarCursos();
                     break;
-                case "2":
+                case 2:
                     cadastrarCurso();
                     break;
-                case "3":
+                case 3:
                     vincularFunionarioCurso();
                     break;
-                case "4":
+                case 4:
                     atualizarStatusCurso();
                     break;
-                case "5":
+                case 5:
                     AtribuirCursoCargoRequest();
                     break;
-                case "0":
+                case 0:
                     return;
                 default:
                     System.out.println("Opção inválida.");
