@@ -35,4 +35,5 @@ public class CursoController {
         return cursoService.editarStatusCurso(request);
     }
 
+
 }

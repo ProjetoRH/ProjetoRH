@@ -29,8 +29,6 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
         String checkIfExistsSql = "SELECT COUNT(*) FROM Curso_Funcionario WHERE id_curso = ? AND id_funcionario = ?";
         String insertSql = "INSERT INTO Curso_Funcionario (id_curso, id_funcionario, status) VALUES (?, ?, ?)";
 
-        // Defina o status inicial aqui. O padrão para um curso atribuído é geralmente 'PENDENTE'.
-        // Se você tiver um Enum StatusCursoPessoal, use StatusCursoPessoal.PENDENTE.toString().
         final String STATUS_INICIAL = "PENDENTE";
 
         try (Connection conn = ConexaoFactory.conectar()) {
@@ -53,10 +51,8 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
                         }
                     }
 
-                    // 2. Preparação para Inserção
                     insertStmt.setInt(1, idCurso);
                     insertStmt.setInt(2, idFuncionario);
-                    // ✅ CORREÇÃO APLICADA: Definindo o terceiro parâmetro (status)
                     insertStmt.setString(3, STATUS_INICIAL);
 
                     insertStmt.addBatch();
@@ -80,7 +76,6 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
 
             } catch (SQLException e) {
                 System.err.println("Erro de SQL ao atribuir funcionários. Desfazendo a transação.");
-                // Você já tem o rollback, o que é ótimo para transações.
                 conn.rollback();
                 e.printStackTrace();
                 return new AtribuirCursoFuncionarioResponse("Erro ao atribuir funcionários: " + e.getMessage());
@@ -96,37 +91,26 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
     @Override
     public AtribuirCursoCargoResponse atribuirCursoCargo(AtribuirCursoCargoRequest request) {
 
-        String queryInsertCursoCargo = """
-        INSERT INTO CursoCargo (id_curso, id_cargo) 
-        VALUES (?, (SELECT id_cargo FROM Cargo WHERE nome = ?))
-        ON CONFLICT DO NOTHING; -- Para evitar duplicatas na regra
-    """;
-
         String querySincronizarFuncionarios = """
-        INSERT INTO Curso_Funcionario (id_funcionario, id_curso, status)
-        SELECT 
-            f.id_funcionario,
-            ? AS id_curso,
-            'PENDENTE'
-        FROM 
-            Funcionario f
-        WHERE 
-            f.id_cargo = (SELECT id_cargo FROM Cargo WHERE nome = ?)
-        ON CONFLICT (id_funcionario, id_curso) DO NOTHING; 
-    """;
+            INSERT INTO Curso_Funcionario (id_funcionario, id_curso, status)
+            SELECT 
+                f.id_funcionario,
+                ? AS id_curso,
+                'PENDENTE'
+            FROM 
+                Funcionario f
+            WHERE 
+                f.id_cargo = (SELECT id_cargo FROM Cargo WHERE nome = ?)
+            ON DUPLICATE KEY UPDATE 
+                id_funcionario = VALUES(id_funcionario);
+            """;
 
-        int linhasAfetadasRegra = 0;
         int funcionariosSincronizados = 0;
+        Connection conn = null;
 
-        try (Connection conn = ConexaoFactory.conectar()) {
-
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement stmtRegra = conn.prepareStatement(queryInsertCursoCargo)) {
-                stmtRegra.setInt(1, request.idCurso());
-                stmtRegra.setString(2, request.nomeCargo());
-                linhasAfetadasRegra = stmtRegra.executeUpdate();
-            }
+        try {
+            conn = ConexaoFactory.conectar();
+            conn.setAutoCommit(false); // Inicia a transação
 
             try (PreparedStatement stmtSinc = conn.prepareStatement(querySincronizarFuncionarios)) {
                 stmtSinc.setInt(1, request.idCurso());
@@ -137,16 +121,33 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
             conn.commit();
 
             String mensagem = String.format(
-                    "Regra de atribuição criada (Curso ID: %d para Cargo: %s). %d funcionário(s) existente(s) foram inscritos.",
+                    "Sincronização concluída (Curso ID: %d para Cargo: %s). %d funcionário(s) existente(s) foram inscritos.",
                     request.idCurso(), request.nomeCargo(), funcionariosSincronizados
             );
             return new AtribuirCursoCargoResponse(mensagem);
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            if (conn != null) {
+                try {
+                    System.err.println("Transação desfeita (ROLLBACK).");
+                    conn.rollback();
+                } catch (SQLException rollbackE) {
+                    System.err.println("Erro ao tentar fazer rollback: " + rollbackE.getMessage());
+                }
+            }
 
-            return new AtribuirCursoCargoResponse("ERRO: Falha ao atribuir curso ao cargo no banco de dados.");
+            e.printStackTrace();
+            return new AtribuirCursoCargoResponse("ERRO: Falha ao sincronizar funcionários no banco de dados.");
+
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println("Erro ao fechar conexão: " + e.getMessage());
+                }
+            }
         }
     }
 
@@ -174,7 +175,6 @@ public class InscricaoRepositoryImpl implements InscricaoRepository {
                     String statusGeralStr = rs.getString("status_geral");
                     String statusPessoalStr = rs.getString("status_pessoal");
 
-                    // Corrige: passa status como String para o DTO
                     respostas.add(new ListarMeusCursosResponse(
                         idCurso,
                         nome,

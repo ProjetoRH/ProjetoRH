@@ -32,36 +32,35 @@ public class UsuarioService {
         }
 
         Usuario usuario = mapper.toEntity(request);
-
         String senha = SenhaUtil.geraSenha();
-
         usuario.setSenha(senha);
-
         System.out.println("DEBUG senha: " + usuario.getSenha());
-
         String senhaHash = SenhaUtil.hashSenha(usuario.getSenha());
         usuario.setSenha(senhaHash);
 
         return usuarioRepository.cadastrarUsuario(usuario);
     }
 
-    public Sessao validarUsuario(LoginUsuarioRequest request) throws SQLException {
+    public Sessao validarUsuario(LoginUsuarioRequest request) throws AutenticacaoException {
         if (request == null || request.email() == null) {
             throw new IllegalArgumentException("Úsuario não pode ser nulo.");
         }
 
-        Email email = request.email();
+        try {
+            Email email = request.email();
+            Usuario usuario = usuarioRepository.buscarPorEmail(email);
 
-        Usuario usuario = usuarioRepository.buscarPorEmail(email);
+            if (usuario == null || usuario.getEmail() == null) {
+                throw new AutenticacaoException("Usuario ou Senha Invalida");
+            }
 
-        if(usuario == null || usuario.getEmail() == null) {
-            throw new AutenticacaoException("Usuario ou Senha Invalida");
+            if (!SenhaUtil.verificaSenha(request.senha(), usuario.getSenha())) {
+                throw new AutenticacaoException("Usuario ou Senha Invalida");
+            }
+
+            return sessaoService.autenticarSessao(usuario);
+        } catch (AutenticacaoException e) {
+            throw new AutenticacaoException("Erro interno de banco de dados: " + e.getMessage());
         }
-
-        if(!SenhaUtil.verificaSenha(request.senha(),usuario.getSenha())) {
-            throw new AutenticacaoException("Usuario ou Senha Invalida");
-        }
-
-        return sessaoService.autenticarSessao(usuario);
     }
 }

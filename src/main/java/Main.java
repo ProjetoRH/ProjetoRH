@@ -1,30 +1,15 @@
-import shared.util.SenhaUtil;
-import view.GerenciarCursosView;
-import view.GerenciarFuncionariosView;
 import view.LoginView;
 
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+        System.out.println("Iniciando Sistema de Gestão de RH...");
 
-        while (true) {
-            new GerenciarFuncionariosView().exibir();
-        }
+        LoginView loginView = new LoginView();
 
+        loginView.exibir();
 
-       // String senha_texto = SenhaUtil.geraSenha();
-
-     //   System.out.println(senha_texto);
-
-       // String senha_texto2 = SenhaUtil.hashSenha( senha_texto );
-
-        //System.out.println(senha_texto2);
-
-       /* while (true) {
-            new LoginView().exibir();
-        }
-
-        */
+        System.out.println("Sistema encerrado.");
     }
 }

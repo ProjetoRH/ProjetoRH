@@ -1,6 +1,5 @@
 package infrastructure.persistence.xlsx;
 
-import application.dto.funcionario.CadastrarFuncionarioExcelRequest;
 import application.dto.funcionario.FuncionarioControllerRequest;
 import domain.model.valueobjects.Email;
 import domain.model.valueobjects.Telefone;
@@ -22,56 +21,51 @@ public class LerExcel {
         List<FuncionarioControllerRequest> funcionarios = new ArrayList<>();
 
         try (FileInputStream stream = new FileInputStream(filepath);
-             XSSFWorkbook workbook = new XSSFWorkbook(stream);) {
+             XSSFWorkbook workbook = new XSSFWorkbook(stream)) {
 
             XSSFSheet sheet = workbook.getSheetAt(0);
-
             Iterator<Row> rowIterator = sheet.iterator();
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
-                if (row.getRowNum() == 0) continue;
-
-                Iterator<Cell> cellIterator = row.cellIterator();
-
-                String nome = "";
-                String emailString = "";
-                String telefoneString = "";
-                String cargo = "";
-                String departamento = "";
-
-                Email email = null;
-                Telefone telefone = null;
-
-                while (cellIterator.hasNext()) {
-
-                    Cell cell = cellIterator.next();
-                    switch (cell.getColumnIndex()) {
-                        case 0:
-                            nome = cell.toString();
-                            break;
-                        case 1:
-                            emailString = cell.toString();
-                            email = new Email(emailString);
-                            break;
-                        case 2:
-                            telefoneString = cell.toString();
-                            telefone = new Telefone(telefoneString);
-                            break;
-                        case 3:
-                            cargo = cell.toString();
-                            break;
-                        case 4:
-                            departamento = cell.toString();
-                            break;
-                    }
+                if (row.getRowNum() == 0) {
+                    continue;
                 }
-                funcionarios.add(new FuncionarioControllerRequest(nome, email, telefone, cargo, departamento));
+
+                try {
+                    Iterator<Cell> cellIterator = row.cellIterator();
+
+                    String nome = "";
+                    String emailString = "";
+                    String telefoneString = "";
+                    String cargo = "";
+                    String departamento = "";
+
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        int columnIndex = cell.getColumnIndex();
+
+                        switch (columnIndex) {
+                            case 0 -> nome = cell.toString();
+                            case 1 -> emailString = cell.toString();
+                            case 2 -> telefoneString = cell.toString();
+                            case 3 -> cargo = cell.toString();
+                            case 4 -> departamento = cell.toString();
+                        }
+                    }
+
+                    Email email = new Email(emailString);
+                    Telefone telefone = new Telefone(telefoneString);
+
+                    funcionarios.add(new FuncionarioControllerRequest(nome, email, telefone, cargo, departamento));
+
+                } catch (Exception e) {
+
+                    System.err.println("AVISO: Erro ao processar a linha " + (row.getRowNum() + 1) + " da planilha. Causa: " + e.getMessage());
+                }
             }
             return funcionarios;
         }
-
     }
 }
-

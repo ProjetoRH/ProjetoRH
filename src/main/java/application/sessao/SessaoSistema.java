@@ -33,7 +33,12 @@ public class SessaoSistema {
 
     public synchronized void iniciarSessao(Usuario usuario) throws SQLException {
         if (usuario == null) throw new IllegalArgumentException("Usuário não pode ser nulo ao iniciar sessão.");
+
         Sessao s = sessaoController.autenticarSessao(usuario);
+
+        if (s == null) {
+            throw new SecurityException("Autenticação de sessão falhou: Credenciais inválidas ou usuário inativo.");
+        }
 
         iniciarSessao(s);
     }
@@ -49,6 +54,10 @@ public class SessaoSistema {
 
     public Sessao obterSessaoAtual() {
         return sessaoAtual;
+    }
+
+    public int obterSessaoId() {
+        return sessaoAtual.getIdFuncionario();
     }
 
 

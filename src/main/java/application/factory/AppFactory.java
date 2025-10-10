@@ -26,6 +26,7 @@ public class AppFactory {
     private static final InscricaoRepository inscricaoRepository = new InscricaoRepositoryImpl();
     private static final CursoRepository cursoRepository = new CursoReposityImpl();
     private static final SessaoRepository sessaoRepository = new SessaoRepositoryImpl();
+    private static final RelatorioRepository relatorioRepository = new RelatorioRepositoryImpl();
 
     // ==== SERVICES ====
     private static final SessaoService sessaoService = new SessaoService(sessaoRepository);
@@ -39,6 +40,7 @@ public class AppFactory {
     );
     private static final InscricaoService inscricaoService = new InscricaoService(inscricaoRepository);
     private static final CursoService cursoService = new CursoService(cursoMapper, cursoRepository);
+    private static final RelatorioService relatorioService = new RelatorioService(relatorioRepository);
 
     // ==== CONTROLLERS ====
     private static final FuncionarioController funcionarioController = new FuncionarioController(
@@ -51,6 +53,7 @@ public class AppFactory {
     private static final InscricaoController inscricaoController = new InscricaoController(inscricaoService);
     private static final CursoController cursoController = new CursoController(cursoService);
     private static final SessaoController sessaoController = new SessaoController();
+    private static final RelatorioController relatorioController = new RelatorioController(relatorioService);
 
     // ==== MÉTODOS DE ACESSO ====
     public static FuncionarioController getFuncionarioController() {
@@ -71,6 +74,10 @@ public class AppFactory {
 
     public static SessaoController getSessaoController() {
         return sessaoController;
+    }
+
+    public static RelatorioController getRelatorioController() {
+        return relatorioController;
     }
 
     public static UsuarioService getUsuarioService() {
@@ -95,5 +102,9 @@ public class AppFactory {
 
     public static SessaoService getSessaoService() {
         return sessaoService;
+    }
+
+    public static RelatorioService getRelatorioService() {
+        return relatorioService;
     }
 }

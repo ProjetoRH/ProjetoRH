@@ -14,18 +14,21 @@ public class AdminMenuView {
             System.out.println("\n=== Menu Administrador ===");
             System.out.println("[1] Gerenciar Funcionários");
             System.out.println("[2] Gerenciar Cursos");
+            System.out.println("[3] Relatórios e Análises");
             System.out.println("[0] Logout");
             System.out.print("Escolha: ");
-            String opcao = scanner.nextLine();
+            int opcao = scanner.nextInt();
 
             switch (opcao) {
-                case "1":
+                case 1:
                     new GerenciarFuncionariosView().exibir();
                     break;
-                case "2":
+                case 2:
                     new GerenciarCursosView().exibir();
                     break;
-                case "0":
+                case 3:
+                    new GerenciarRelatoriosView().exibir();
+                case 0:
                     SessaoSistema.obterInstancia().encerrarSessao();
                     return;
                 default:

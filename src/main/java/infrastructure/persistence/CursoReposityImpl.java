@@ -3,14 +3,13 @@
     import application.dto.curso.*;
     import domain.model.Curso;
     import domain.model.enums.StatusCurso;
+    import domain.model.enums.StatusCursoPessoal;
     import domain.model.enums.TipoUsuario;
     import domain.repository.CursoRepository;
     import infrastructure.database.ConexaoFactory;
 
-    import java.sql.Connection;
-    import java.sql.PreparedStatement;
-    import java.sql.ResultSet;
-    import java.sql.SQLException;
+    import java.sql.*;
+    import java.time.LocalDate;
     import java.util.ArrayList;
     import java.util.List;
 
@@ -170,6 +169,5 @@
                 throw new RuntimeException("Erro ao editar o status do curso no banco de dados.", e);
             }
         }
-
 
     }

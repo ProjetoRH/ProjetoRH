@@ -27,13 +27,14 @@ public class GerenciarCursosView {
 
     public void exibir() {
         while (true) {
-            System.out.println("\n=== Gerenciar Cursos ===");
+            System.out.println("\n================= Gerenciar Cursos =================");
             System.out.println("[1] Listar Cursos");
             System.out.println("[2] Cadastrar Novo Curso");
             System.out.println("[3] Vincular Funcionário a Curso");
             System.out.println("[4] Atualizar Status de Curso");
-            System.out.println("[5] Configurar Automação de Curso por Cargo");
+            System.out.println("[5] Atribuir Curso para um Cargo (Inscrição em Massa)");
             System.out.println("[0] Voltar");
+            System.out.println("====================================================");
             System.out.print("Escolha: ");
             String opcao = scanner.nextLine();
 
@@ -86,7 +87,9 @@ public class GerenciarCursosView {
     }
 
     private void atualizarStatusCurso() {
-        System.out.print("ID do curso: ");
+        listarCursos();
+
+        System.out.print("Digite o Id do curso: ");
         int id = scanner.nextInt();
 
         System.out.println("\nSelecione o novo status:");
@@ -173,6 +176,7 @@ public class GerenciarCursosView {
         listarCursos();
         System.out.print("Digite o ID do curso: ");
         int idCurso = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Digite o nome do cargo: ");
         String nomeCargo = scanner.nextLine();
 

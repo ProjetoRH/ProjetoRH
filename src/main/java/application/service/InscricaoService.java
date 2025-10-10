@@ -40,13 +40,11 @@ public class InscricaoService {
         return inscricaoRepository.atribuirCursoCargo(request);
     }
 
-    // Lista os cursos do funcionário com status pessoal e geral
     public List<ListarMeusCursosResponse> listarCursosDoFuncionario(int idFuncionario) throws SQLException {
         ValidacaoUtil.checarObrigatoriedade(idFuncionario, "Identificador do Funcionário");
         return inscricaoRepository.buscarCursosPorFuncionario(idFuncionario);
     }
 
-    // Consulta detalhe de um curso para o funcionário
     public DetalheCursoResponse consultarDetalheCurso(int idFuncionario, int idCurso) throws SQLException {
         ValidacaoUtil.checarObrigatoriedade(idFuncionario, "Identificador do Funcionário");
         ValidacaoUtil.checarObrigatoriedade(idCurso, "Identificador do Curso");

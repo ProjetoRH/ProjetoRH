@@ -19,7 +19,7 @@ public class CursoService {
     }
 
     public CadastrarCursoResponse cadastrarCurso(CadastrarCursoRequest request) {
-        if(request == null) {
+        if (request == null) {
             throw new CursoException("O Curso Não Pode Ser Nulo.");
         }
 
@@ -29,7 +29,7 @@ public class CursoService {
     }
 
     public ExcluirCursoResponse excluirCurso(ExcluirCursoRequest request) {
-        if(request == null) {
+        if (request == null) {
             throw new CursoException("O Curso Não Pode Ser Nulo.");
         }
 
@@ -37,7 +37,7 @@ public class CursoService {
     }
 
     public List<ListarCursoResponse> listarCurso(ListarCursoRequest request) {
-        if(request == null) {
+        if (request == null) {
             throw new CursoException("O Nome do Curso Não Pode Ser Nulo.");
         }
 
@@ -56,4 +56,5 @@ public class CursoService {
 
         return cursoRepository.editarStatusCurso(request);
     }
+
 }

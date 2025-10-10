@@ -17,4 +17,5 @@ public interface CursoRepository {
     List<ListarTodosCursoResponse> listarTodosCurso();
 
     EditarStatusCursoResponse editarStatusCurso(EditarStatusCursoRequest request);
+
 }
